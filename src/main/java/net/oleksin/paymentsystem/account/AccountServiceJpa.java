@@ -1,8 +1,8 @@
 package net.oleksin.paymentsystem.account;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Profile({"springJpaProfile", "default"})
@@ -14,6 +14,7 @@ public class AccountServiceJpa implements AccountService {
     this.accountRepository = accountRepository;
   }
   
+  @Transactional
   @Override
   public Account getAccountById(Long id) {
     return accountRepository.getById(id);

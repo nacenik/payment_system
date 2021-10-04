@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface PersonService {
-  Long saveNewPerson(Person person);
+  Person saveNewPerson(Person person);
   
   List<Person> getAllPersons();
   
