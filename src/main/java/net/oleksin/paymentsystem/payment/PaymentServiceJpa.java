@@ -3,6 +3,7 @@ package net.oleksin.paymentsystem.payment;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountRepository;
 import net.oleksin.paymentsystem.exception.AccountNotFoundException;
+import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,11 +26,11 @@ public class PaymentServiceJpa implements PaymentService {
   @Transactional
   @Override
   public Payment createNewPayment(Payment payment) {
-    if (payment == null) {
-      throw new AccountNotFoundException();
+    if (isPaymentNull(payment)) {
+      throw new PaymentNotFoundException();
     }
     Account sourceAccount = accountRepository.getById(payment.getSource().getId());
-    Account destinationAccount = accountRepository.getById(payment.getSource().getId());
+    Account destinationAccount = accountRepository.getById(payment.getDestination().getId());
     
     BigDecimal sourceAmount = sourceAccount.getBalance();
     BigDecimal destinationAmount = destinationAccount.getBalance();
@@ -40,9 +41,10 @@ public class PaymentServiceJpa implements PaymentService {
       Payment newPayment = new Payment();
       newPayment.setSource(sourceAccount);
       newPayment.setDestination(destinationAccount);
-      newPayment.setReason(newPayment.getReason());
+      newPayment.setReason(payment.getReason());
+      newPayment.setAmount(payment.getAmount());
       
-      if(sourceAccount.getBalance().compareTo(newPayment.getAmount()) >= 0) {
+      if(sourceAccount.getBalance().compareTo(newPayment.getAmount()) > 0) {
         newPayment.setStatus(Status.ERROR);
       } else {
         sourceAccount.setBalance(sourceAmount.subtract(newPayment.getAmount()));
@@ -55,6 +57,16 @@ public class PaymentServiceJpa implements PaymentService {
       return paymentRepository.save(newPayment);
     }
     
+  }
+
+  private boolean isPaymentNull(Payment payment) {
+    return payment == null
+            || payment.getSource() == null
+            || payment.getDestination() == null
+            || payment.getSource().getId() == null
+            || payment.getDestination().getId() == null
+            || payment.getReason() == null
+            || payment.getAmount() == null;
   }
   
 }

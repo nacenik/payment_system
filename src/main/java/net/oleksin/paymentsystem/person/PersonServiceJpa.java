@@ -1,7 +1,6 @@
 package net.oleksin.paymentsystem.person;
 
 import net.oleksin.paymentsystem.account.Account;
-import net.oleksin.paymentsystem.account.AccountRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
