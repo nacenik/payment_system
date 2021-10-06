@@ -13,4 +13,13 @@ public enum AccountType {
   public String getAccountType() {
     return type;
   }
+
+  public static AccountType fromString(String text) {
+    for (AccountType b : AccountType.values()) {
+      if (b.type.equalsIgnoreCase(text)) {
+        return b;
+      }
+    }
+    return null;
+  }
 }

@@ -1,9 +1,6 @@
 package net.oleksin.paymentsystem.person;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import net.oleksin.paymentsystem.account.Account;
 
 import javax.persistence.*;
@@ -13,10 +10,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "persons")
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Getter
 @Setter
-@NoArgsConstructor
 public class Person {
   
   @Id
