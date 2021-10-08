@@ -1,5 +1,8 @@
-package net.oleksin.paymentsystem.payment;
+package net.oleksin.paymentsystem.payment.jdbctamplate;
 
+import net.oleksin.paymentsystem.payment.BatchPaymentService;
+import net.oleksin.paymentsystem.payment.PaymentService;
+import net.oleksin.paymentsystem.payment.Payment;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

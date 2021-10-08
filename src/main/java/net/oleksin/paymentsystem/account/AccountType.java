@@ -1,8 +1,18 @@
 package net.oleksin.paymentsystem.account;
 
 public enum AccountType {
-  SIMPLE_CARD("simple/card"),
-  CREDIT_CARD("credit/card");
+  simpleCard("simpleCard") {
+    @Override
+    public String toString() {
+      return this.getAccountType();
+    }
+  },
+  creditCard("creditCard") {
+    @Override
+    public String toString() {
+      return this.getAccountType();
+    }
+  };
   
   private final String type;
   

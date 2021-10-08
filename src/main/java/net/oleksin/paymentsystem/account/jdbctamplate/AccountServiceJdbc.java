@@ -1,5 +1,8 @@
-package net.oleksin.paymentsystem.account;
+package net.oleksin.paymentsystem.account.jdbctamplate;
 
+import net.oleksin.paymentsystem.account.AccountService;
+import net.oleksin.paymentsystem.account.AccountType;
+import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.person.Person;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -42,17 +42,4 @@ public class Payment {
   @Column(name = "status")
   @Enumerated(EnumType.STRING)
   private Status status;
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Payment payment = (Payment) o;
-    return Objects.equals(id, payment.id) && Objects.equals(source, payment.source) && Objects.equals(destination, payment.destination) && Objects.equals(amount, payment.amount) && Objects.equals(reason, payment.reason) && Objects.equals(timestamp, payment.timestamp) && status == payment.status;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, source, destination, amount, reason, timestamp, status);
-  }
 }

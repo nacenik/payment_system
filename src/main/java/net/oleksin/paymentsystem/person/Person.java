@@ -27,19 +27,6 @@ public class Person {
   @Column(name = "last_name")
   private String lastName;
   
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
+  @OneToMany(mappedBy = "person")
   private Set<Account> accounts = new HashSet<>();
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Person person = (Person) o;
-    return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(accounts, person.accounts);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, firstName, lastName, accounts);
-  }
 }

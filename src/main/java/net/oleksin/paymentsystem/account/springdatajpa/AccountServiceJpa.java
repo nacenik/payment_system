@@ -1,5 +1,7 @@
-package net.oleksin.paymentsystem.account;
+package net.oleksin.paymentsystem.account.springdatajpa;
 
+import net.oleksin.paymentsystem.account.Account;
+import net.oleksin.paymentsystem.account.AccountService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,4 +21,5 @@ public class AccountServiceJpa implements AccountService {
   public Account getAccountById(Long id) {
     return accountRepository.getById(id);
   }
+
 }

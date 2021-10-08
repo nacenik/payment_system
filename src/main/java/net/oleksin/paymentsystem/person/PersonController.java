@@ -3,6 +3,7 @@ package net.oleksin.paymentsystem.person;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountDto;
 import net.oleksin.paymentsystem.account.AccountResponseDto;
+import net.oleksin.paymentsystem.account.AccountType;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(name = "/person",
+@RequestMapping(value = "/person",
         produces = { MediaType.APPLICATION_JSON_VALUE,
                 MediaType.APPLICATION_XML_VALUE })
 public class PersonController {
@@ -26,12 +27,21 @@ public class PersonController {
   public PersonDto createPerson(PersonRequestDto personRequestDto) {
     return toPersonResponseDto(personService.saveNewPerson(fromPersonRequestDto(personRequestDto)));
   }
+
+//  @GetMapping(consumes = { MediaType.APPLICATION_JSON_VALUE,
+//          MediaType.APPLICATION_XML_VALUE })
+//  public Set<Person> getPersons() {
+//
+//  }
+
+  @GetMapping(value = "/{id}")
+  public PersonDto getPerson(@PathVariable("id") Long id) {
+    return toPersonResponseDto(personService.getPersonById(id));
+  }
   
-  @GetMapping(name = "/{id}",
-          consumes = { MediaType.APPLICATION_JSON_VALUE,
-          MediaType.APPLICATION_XML_VALUE })
-  public AccountResponseDto getAccounts(@PathVariable("id") PersonDto personDto) {
-    return toAccountDto(personService.getAccountByPersonId(personDto.getId()));
+  @GetMapping(value = "/{id}/account")
+  public AccountResponseDto getAccounts(@PathVariable("id") Long id) {
+    return toAccountDto(personService.getAccountByPersonId(id));
   }
   
   private PersonDto toPersonResponseDto(Person person) {
@@ -54,7 +64,7 @@ public class PersonController {
   private Account fromAccountRequestDto(AccountDto accountDto) {
     return Account.builder()
             .accountNumber(accountDto.getAccountNumber())
-            .accountType(accountDto.getAccountType())
+            .accountType(AccountType.fromString(accountDto.getAccountType()))
             .balance(accountDto.getBalance())
             .build();
   }
@@ -72,7 +82,7 @@ public class PersonController {
     return AccountDto.builder()
             .id(account.getId())
             .accountNumber(account.getAccountNumber())
-            .accountType(account.getAccountType())
+            .accountType(account.getAccountType().getAccountType())
             .balance(account.getBalance())
             .build();
   }

@@ -1,9 +1,12 @@
-package net.oleksin.paymentsystem.payment;
+package net.oleksin.paymentsystem.payment.springdatajpa;
 
 import net.oleksin.paymentsystem.account.Account;
-import net.oleksin.paymentsystem.account.AccountRepository;
+import net.oleksin.paymentsystem.account.springdatajpa.AccountRepository;
 import net.oleksin.paymentsystem.exception.AccountNotFoundException;
 import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
+import net.oleksin.paymentsystem.payment.Payment;
+import net.oleksin.paymentsystem.payment.PaymentService;
+import net.oleksin.paymentsystem.payment.Status;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

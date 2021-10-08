@@ -1,12 +1,13 @@
-package net.oleksin.paymentsystem.person;
+package net.oleksin.paymentsystem.person.jdbctamplate;
 
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountType;
+import net.oleksin.paymentsystem.person.PersonService;
+import net.oleksin.paymentsystem.person.Person;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;

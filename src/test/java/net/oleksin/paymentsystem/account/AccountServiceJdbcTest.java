@@ -1,5 +1,6 @@
 package net.oleksin.paymentsystem.account;
 
+import net.oleksin.paymentsystem.account.jdbctamplate.AccountServiceJdbc;
 import net.oleksin.paymentsystem.person.Person;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,11 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Clock;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -53,7 +51,7 @@ class AccountServiceJdbcTest {
         when(resultSet.getString(2))
                 .thenReturn("any");
         when(resultSet.getString(3))
-                .thenReturn(AccountType.CREDIT_CARD.getAccountType());
+                .thenReturn(AccountType.creditCard.getAccountType());
         when(resultSet.getBigDecimal(4))
                 .thenReturn(amount);
         when(resultSet.getObject(5))
@@ -63,7 +61,7 @@ class AccountServiceJdbcTest {
         Account account = rowMapper.mapRow(resultSet, anyInt());
         assertNotNull(account);
         assertEquals(ID, account.getId());
-        assertEquals(AccountType.CREDIT_CARD, account.getAccountType());
+        assertEquals(AccountType.creditCard, account.getAccountType());
         assertEquals(amount, account.getBalance());
     }
 }
