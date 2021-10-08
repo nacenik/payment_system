@@ -1,6 +1,7 @@
 package net.oleksin.paymentsystem.account;
 
 import lombok.*;
+import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.person.Person;
 
 import javax.persistence.*;
@@ -23,8 +24,8 @@ public class Account {
   @Column(name = "account_number")
   private String accountNumber;
   
-  @Column(name = "account_type")
-  @Enumerated(EnumType.STRING)
+  @ManyToOne
+  @JoinColumn(name = "type_id")
   private AccountType accountType;
   
   @Column(name = "balance")
