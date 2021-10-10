@@ -1,4 +1,4 @@
-package net.oleksin.paymentsystem.payment.springdatajpa;
+package net.oleksin.paymentsystem.payment.jpa;
 
 import net.oleksin.paymentsystem.payment.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;

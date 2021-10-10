@@ -1,7 +1,7 @@
-package net.oleksin.paymentsystem.payment.springdatajpa;
+package net.oleksin.paymentsystem.payment.jpa;
 
 import net.oleksin.paymentsystem.account.Account;
-import net.oleksin.paymentsystem.account.springdatajpa.AccountRepository;
+import net.oleksin.paymentsystem.account.jpa.AccountRepository;
 import net.oleksin.paymentsystem.exception.AccountNotFoundException;
 import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
 import net.oleksin.paymentsystem.payment.Payment;

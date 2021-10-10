@@ -1,18 +1,16 @@
 package net.oleksin.paymentsystem.accounttype;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "types")
-@Builder
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
+@Builder
 @Getter
+@Setter
 public class AccountType {
   
   @Id

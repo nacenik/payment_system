@@ -1,6 +1,6 @@
 package net.oleksin.paymentsystem.account;
 
-import net.oleksin.paymentsystem.account.jdbctamplate.AccountServiceJdbc;
+import net.oleksin.paymentsystem.account.jdbc.AccountServiceJdbc;
 import net.oleksin.paymentsystem.person.Person;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,8 +50,6 @@ class AccountServiceJdbcTest {
                 .thenReturn(ID);
         when(resultSet.getString(2))
                 .thenReturn("any");
-        when(resultSet.getString(3))
-                .thenReturn(AccountType.creditCard.getAccountType());
         when(resultSet.getBigDecimal(4))
                 .thenReturn(amount);
         when(resultSet.getObject(5))
@@ -61,7 +59,6 @@ class AccountServiceJdbcTest {
         Account account = rowMapper.mapRow(resultSet, anyInt());
         assertNotNull(account);
         assertEquals(ID, account.getId());
-        assertEquals(AccountType.creditCard, account.getAccountType());
         assertEquals(amount, account.getBalance());
     }
 }

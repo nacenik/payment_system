@@ -1,4 +1,4 @@
-package net.oleksin.paymentsystem.payment.jdbctamplate;
+package net.oleksin.paymentsystem.payment.jdbc;
 
 import net.oleksin.paymentsystem.payment.BatchPaymentService;
 import net.oleksin.paymentsystem.payment.PaymentService;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-@Profile("jdbctamplate")
+@Profile("jdbcTemplate")
 public class BatchPaymentServiceJdbc implements BatchPaymentService {
     private  final PaymentService paymentService;
 

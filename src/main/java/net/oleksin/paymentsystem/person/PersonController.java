@@ -3,10 +3,10 @@ package net.oleksin.paymentsystem.person;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountDto;
 import net.oleksin.paymentsystem.account.AccountResponseDto;
-import net.oleksin.paymentsystem.account.AccountType;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,18 +24,20 @@ public class PersonController {
   
   @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE,
           MediaType.APPLICATION_XML_VALUE })
-  public PersonDto createPerson(PersonRequestDto personRequestDto) {
-    return toPersonResponseDto(personService.saveNewPerson(fromPersonRequestDto(personRequestDto)));
+  public PersonResponseDto createPerson(PersonRequestDto personRequestDto) {
+    return toPersonDtoAfterSave(personService.saveNewPerson(fromPersonRequestDto(personRequestDto)));
+  }
+  
+  @GetMapping
+  public List<PersonResponseDto> getAllPersons() {
+    return personService.getAllPersons()
+            .stream()
+            .map(this::toPersonResponseDto)
+            .collect(Collectors.toList());
   }
 
-//  @GetMapping(consumes = { MediaType.APPLICATION_JSON_VALUE,
-//          MediaType.APPLICATION_XML_VALUE })
-//  public Set<Person> getPersons() {
-//
-//  }
-
   @GetMapping(value = "/{id}")
-  public PersonDto getPerson(@PathVariable("id") Long id) {
+  public PersonResponseDto getPerson(@PathVariable("id") Long id) {
     return toPersonResponseDto(personService.getPersonById(id));
   }
   
@@ -44,11 +46,20 @@ public class PersonController {
     return toAccountDto(personService.getAccountByPersonId(id));
   }
   
-  private PersonDto toPersonResponseDto(Person person) {
-    return PersonDto.builder()
+  private PersonResponseDto toPersonResponseDto(Person person) {
+    return PersonResponseDto.builder()
+            .id(person.getId())
+            .firstName(person.getFirstName())
+            .lastName(person.getLastName())
+            .build();
+  }
+  
+  private PersonResponseDto toPersonDtoAfterSave(Person person) {
+    return PersonResponseDto.builder()
             .id(person.getId())
             .build();
   }
+  
   private Person fromPersonRequestDto(PersonRequestDto requestDto) {
     return Person.builder()
             .firstName(requestDto.getFirstName())
@@ -64,7 +75,6 @@ public class PersonController {
   private Account fromAccountRequestDto(AccountDto accountDto) {
     return Account.builder()
             .accountNumber(accountDto.getAccountNumber())
-            .accountType(AccountType.fromString(accountDto.getAccountType()))
             .balance(accountDto.getBalance())
             .build();
   }
@@ -82,7 +92,7 @@ public class PersonController {
     return AccountDto.builder()
             .id(account.getId())
             .accountNumber(account.getAccountNumber())
-            .accountType(account.getAccountType().getAccountType())
+            .accountType(account.getAccountType().getName())
             .balance(account.getBalance())
             .build();
   }

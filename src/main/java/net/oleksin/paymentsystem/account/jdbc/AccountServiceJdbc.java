@@ -1,7 +1,6 @@
-package net.oleksin.paymentsystem.account.jdbctamplate;
+package net.oleksin.paymentsystem.account.jdbc;
 
 import net.oleksin.paymentsystem.account.AccountService;
-import net.oleksin.paymentsystem.account.AccountType;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.person.Person;
 import org.springframework.context.annotation.Profile;
@@ -12,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Service
-@Profile("jdbctamplate")
+@Profile("jdbcTemplate")
 public class AccountServiceJdbc implements AccountService {
 
     private static final String SQL_FIND_BY_ID =
@@ -35,7 +34,6 @@ public class AccountServiceJdbc implements AccountService {
         return Account.builder()
                 .id(resultSet.getLong(1))
                 .accountNumber(resultSet.getString(2))
-                .accountType(AccountType.fromString(resultSet.getString(3)))
                 .balance(resultSet.getBigDecimal(4))
                 .person((Person) resultSet.getObject(5))
                 .build();

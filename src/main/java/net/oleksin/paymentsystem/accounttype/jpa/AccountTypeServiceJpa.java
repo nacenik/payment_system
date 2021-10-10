@@ -1,5 +1,7 @@
-package net.oleksin.paymentsystem.accounttype;
+package net.oleksin.paymentsystem.accounttype.jpa;
 
+import net.oleksin.paymentsystem.accounttype.AccountType;
+import net.oleksin.paymentsystem.accounttype.AccountTypeService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

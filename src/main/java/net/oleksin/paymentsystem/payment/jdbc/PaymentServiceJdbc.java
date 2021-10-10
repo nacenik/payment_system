@@ -1,4 +1,4 @@
-package net.oleksin.paymentsystem.payment.jdbctamplate;
+package net.oleksin.paymentsystem.payment.jdbc;
 
 import net.oleksin.paymentsystem.payment.PaymentService;
 import net.oleksin.paymentsystem.payment.Payment;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 
 @Service
-@Profile("jdbctamplate")
+@Profile("jdbcTemplate")
 public class PaymentServiceJdbc implements PaymentService {
 
     private static final String SQL_INSERT =

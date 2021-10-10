@@ -1,13 +1,14 @@
-package net.oleksin.paymentsystem.person.jdbctamplate;
+package net.oleksin.paymentsystem.person.jdbc;
 
 import net.oleksin.paymentsystem.account.Account;
-import net.oleksin.paymentsystem.account.AccountType;
+import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.person.PersonService;
 import net.oleksin.paymentsystem.person.Person;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Profile("jdbctamplate")
+@Profile("jdbcTemplate")
 public class PersonServiceJdbc implements PersonService {
 
     private static final String SQL_INSERT =
@@ -33,7 +34,9 @@ public class PersonServiceJdbc implements PersonService {
 
     private static final String SQL_SELECT_ACCOUNTS_BY_PERSON_ID =
             "select * from accounts" +
-                    " where person_id = ?";
+                    " inner join types" +
+                    " on accounts.type_id = types.id" +
+                    " where accounts.person_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -53,32 +56,37 @@ public class PersonServiceJdbc implements PersonService {
 
     @Override
     public Person getPersonById(Long id) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_PERSON_BY_ID, this::matToPerson, id);
+        return jdbcTemplate.queryForObject(SQL_SELECT_PERSON_BY_ID, this::mapToPerson, id);
     }
 
     @Override
     public Set<Account> getAccountByPersonId(Long id) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_ACCOUNTS_BY_PERSON_ID, (rs, rovNum) -> {
-            Set<Account> accounts = new HashSet<>();
-            while (rs.next()) {
-                Account account = Account.builder()
-                        .id(rs.getLong(1))
-                        .accountNumber(rs.getString(2))
-                        .accountType(AccountType.fromString(rs.getString(3)))
-                        .balance(rs.getBigDecimal(4))
-                        .build();
-                accounts.add(account);
-            }
-            return accounts;
-        }, id);
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_SELECT_ACCOUNTS_BY_PERSON_ID, id);
+        
+        Set<Account> accounts = new HashSet<>();
+        rs.beforeFirst();
+        while (rs.next()) {
+            AccountType accountType = AccountType.builder()
+                    .id(rs.getLong(6))
+                    .name(rs.getString(7))
+                    .build();
+            Account account = Account.builder()
+                    .id(rs.getLong(1))
+                    .accountNumber(rs.getString(2))
+                    .accountType(accountType)
+                    .balance(rs.getBigDecimal(3))
+                    .build();
+            accounts.add(account);
+        }
+        
+        return accounts;
     }
 
-    private Person matToPerson(ResultSet resultSet, int i) throws SQLException {
+    private Person mapToPerson(ResultSet resultSet, int i) throws SQLException {
         return Person.builder()
                 .id(resultSet.getLong(1))
                 .firstName(resultSet.getString(2))
                 .lastName(resultSet.getString(3))
-                .accounts((Set<Account>) resultSet.getObject(4))
                 .build();
     }
 

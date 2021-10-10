@@ -1,4 +1,4 @@
-package net.oleksin.paymentsystem.account.springdatajpa;
+package net.oleksin.paymentsystem.account.jpa;
 
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountService;
