@@ -22,8 +22,8 @@ public class PersonController {
     this.personService = personService;
   }
   
-  @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE,
-          MediaType.APPLICATION_XML_VALUE })
+  @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE,
+          MediaType.APPLICATION_JSON_VALUE})
   public PersonResponseDto createPerson(PersonRequestDto personRequestDto) {
     return toPersonDtoAfterSave(personService.saveNewPerson(fromPersonRequestDto(personRequestDto)));
   }
@@ -37,13 +37,13 @@ public class PersonController {
   }
 
   @GetMapping(value = "/{id}")
-  public PersonResponseDto getPerson(@PathVariable("id") Long id) {
+  public PersonResponseDto getPersonById(@PathVariable("id") Long id) {
     return toPersonResponseDto(personService.getPersonById(id));
   }
   
   @GetMapping(value = "/{id}/account")
-  public AccountResponseDto getAccounts(@PathVariable("id") Long id) {
-    return toAccountDto(personService.getAccountByPersonId(id));
+  public AccountResponseDto getAccountsByPersonId(@PathVariable("id") Long id) {
+    return toAccountDto(personService.getAccountsByPersonId(id));
   }
   
   private PersonResponseDto toPersonResponseDto(Person person) {
@@ -64,19 +64,24 @@ public class PersonController {
     return Person.builder()
             .firstName(requestDto.getFirstName())
             .lastName(requestDto.getLastName())
-            .accounts(requestDto
+            .accounts(requestDto.getAccounts() != null && !requestDto.getAccounts().isEmpty()
+                    ? requestDto
                     .getAccounts()
                     .stream()
                     .map(this::fromAccountRequestDto)
-                    .collect(Collectors.toSet()))
+                    .collect(Collectors.toSet())
+                    : null)
             .build();
   }
   
   private Account fromAccountRequestDto(AccountDto accountDto) {
-    return Account.builder()
-            .accountNumber(accountDto.getAccountNumber())
-            .balance(accountDto.getBalance())
-            .build();
+    if (accountDto != null) {
+      return Account.builder()
+              .accountNumber(accountDto.getAccountNumber())
+              .balance(accountDto.getBalance())
+              .build();
+    }
+    return null;
   }
   
   private AccountResponseDto toAccountDto(Set<Account> accounts) {
@@ -92,7 +97,9 @@ public class PersonController {
     return AccountDto.builder()
             .id(account.getId())
             .accountNumber(account.getAccountNumber())
-            .accountType(account.getAccountType().getName())
+            .accountType(account.getAccountType() != null
+                    ? account.getAccountType().getName()
+                    : null)
             .balance(account.getBalance())
             .build();
   }

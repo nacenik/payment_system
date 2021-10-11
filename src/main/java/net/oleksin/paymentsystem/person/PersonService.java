@@ -12,5 +12,5 @@ public interface PersonService {
   
   Person getPersonById(Long id);
   
-  Set<Account> getAccountByPersonId(Long id);
+  Set<Account> getAccountsByPersonId(Long id);
 }

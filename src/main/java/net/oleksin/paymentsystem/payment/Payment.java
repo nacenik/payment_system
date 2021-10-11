@@ -5,6 +5,7 @@ import lombok.*;
 import net.oleksin.paymentsystem.account.Account;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @Builder
 @Getter
 @Setter
-public class Payment {
+public class Payment implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

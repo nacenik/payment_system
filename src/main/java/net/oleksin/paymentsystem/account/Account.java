@@ -5,6 +5,7 @@ import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.person.Person;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ import java.util.Objects;
 @Builder
 @Getter
 @Setter
-public class Account {
+public class Account implements Serializable {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

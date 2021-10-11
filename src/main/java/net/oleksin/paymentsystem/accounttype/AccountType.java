@@ -3,6 +3,7 @@ package net.oleksin.paymentsystem.accounttype;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "types")
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-public class AccountType {
+public class AccountType implements Serializable {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

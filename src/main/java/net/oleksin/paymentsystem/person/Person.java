@@ -4,18 +4,20 @@ import lombok.*;
 import net.oleksin.paymentsystem.account.Account;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "persons")
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-public class Person {
+public class Person implements Serializable {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

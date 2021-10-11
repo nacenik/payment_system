@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
+import javax.sql.RowSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -58,11 +59,11 @@ public class PersonServiceJdbc implements PersonService {
     public Person getPersonById(Long id) {
         return jdbcTemplate.queryForObject(SQL_SELECT_PERSON_BY_ID, this::mapToPerson, id);
     }
-
+    
     @Override
-    public Set<Account> getAccountByPersonId(Long id) {
+    public Set<Account> getAccountsByPersonId(Long id) {
         SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_SELECT_ACCOUNTS_BY_PERSON_ID, id);
-        
+
         Set<Account> accounts = new HashSet<>();
         rs.beforeFirst();
         while (rs.next()) {
@@ -78,10 +79,10 @@ public class PersonServiceJdbc implements PersonService {
                     .build();
             accounts.add(account);
         }
-        
+
         return accounts;
     }
-
+    
     private Person mapToPerson(ResultSet resultSet, int i) throws SQLException {
         return Person.builder()
                 .id(resultSet.getLong(1))
