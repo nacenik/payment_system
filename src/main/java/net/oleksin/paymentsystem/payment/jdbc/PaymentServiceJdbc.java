@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class PaymentServiceJdbc implements PaymentService {
 
     private static final String SQL_INSERT =
-            "insert into payments(id, source_id, destination_id, amount, reason, timestamp, status)" +
+            "insert into payments(id, amount, reason, timestamp, status, source_id, destination_id, )" +
                     " values(?, ?, ?, ?, ?, ?, ?)";
 
     private final JdbcTemplate jdbcTemplate;
@@ -32,12 +32,12 @@ public class PaymentServiceJdbc implements PaymentService {
     private PreparedStatementCallback<Payment> getInsertCallBack(Payment payment) {
         return preparedStatement -> {
             preparedStatement.setLong(1, payment.getId());
-            preparedStatement.setObject(2, payment.getSource());
-            preparedStatement.setObject(3, payment.getDestination());
-            preparedStatement.setBigDecimal(4, payment.getAmount());
-            preparedStatement.setString(5, payment.getReason());
-            preparedStatement.setTimestamp(6, Timestamp.valueOf(payment.getTimestamp()));
-            preparedStatement.setString(7, payment.getStatus().getStatusString());
+            preparedStatement.setBigDecimal(2, payment.getAmount());
+            preparedStatement.setString(3, payment.getReason());
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(payment.getTimestamp()));
+            preparedStatement.setString(5, payment.getStatus().getStatusString());
+            preparedStatement.setObject(6, payment.getSource());
+            preparedStatement.setObject(7, payment.getDestination());
 
             preparedStatement.executeUpdate();
 

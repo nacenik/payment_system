@@ -6,22 +6,44 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(value = "/payment",
-        produces = { MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE })
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE,
+        MediaType.APPLICATION_XML_VALUE })
 @RestController
 public class PaymentController {
   
   private final PaymentService paymentService;
+  private final BatchPaymentService batchPaymentService;
   
-  public PaymentController(PaymentService paymentService) {
+  public PaymentController(PaymentService paymentService, BatchPaymentService batchPaymentService) {
     this.paymentService = paymentService;
+    this.batchPaymentService = batchPaymentService;
   }
   
-  @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE,
-          MediaType.APPLICATION_XML_VALUE })
+  @PostMapping(value = "/payment",
+          consumes = { MediaType.APPLICATION_JSON_VALUE,
+                  MediaType.APPLICATION_XML_VALUE })
   public PaymentResponseDto createPayment(PaymentRequestDto paymentRequestDto) {
     return toResponseDto(paymentService.createNewPayment(fromRequestDto(paymentRequestDto)));
+  }
+
+  @PostMapping(value = "/payments",
+          consumes = { MediaType.APPLICATION_JSON_VALUE,
+          MediaType.APPLICATION_XML_VALUE })
+  public Set<PaymentResponseDto> createPayment(Set<Payment> payments) {
+    return toResponseDto(batchPaymentService.createNewPayments(payments));
+  }
+
+  private Set<PaymentResponseDto> toResponseDto(Set<Payment> payments) {
+    return payments
+            .stream()
+            .map(payment -> PaymentResponseDto.builder()
+                    .id(payment.getId())
+                    .status(payment.getStatus())
+                    .build())
+            .collect(Collectors.toSet());
   }
   
   private PaymentResponseDto toResponseDto(Payment payment) {

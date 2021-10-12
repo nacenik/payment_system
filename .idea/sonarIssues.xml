@@ -93,6 +93,51 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/journal/Journal.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/journal/JournalRequestDto.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/journal/JournalResponseDto.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/journal/JournalSavingDto.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/journal/JournalService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/journal/jpa/JournalRepository.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/journal/jpa/JournalServiceJpa.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/BatchPaymentController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/BatchPaymentService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/BatchPaymentServiceJdbc.java">
           <value>
             <set />
@@ -104,6 +149,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/PaymentController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/PaymentService.java">
           <value>
             <set />
           </value>
@@ -123,7 +173,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jdbc/PaymentServiceJdbc.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jdbctamplate/PaymentServiceJdbc.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jpa/PaymentServiceJpa.java">
           <value>
             <set />
           </value>

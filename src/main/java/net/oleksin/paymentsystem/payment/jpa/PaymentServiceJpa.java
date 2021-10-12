@@ -5,8 +5,10 @@ import net.oleksin.paymentsystem.account.jpa.AccountRepository;
 import net.oleksin.paymentsystem.exception.AccountNotFoundException;
 import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
 import net.oleksin.paymentsystem.payment.Payment;
+import net.oleksin.paymentsystem.payment.PaymentRequestDto;
 import net.oleksin.paymentsystem.payment.PaymentService;
 import net.oleksin.paymentsystem.payment.Status;
+import net.oleksin.paymentsystem.person.jpa.PersonRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +22,12 @@ public class PaymentServiceJpa implements PaymentService {
   
   private final PaymentRepository paymentRepository;
   private final AccountRepository accountRepository;
+  private final PersonRepository personRepository;
   
-  public PaymentServiceJpa(PaymentRepository paymentRepository, AccountRepository accountRepository) {
+  public PaymentServiceJpa(PaymentRepository paymentRepository, AccountRepository accountRepository, PersonRepository personRepository) {
     this.paymentRepository = paymentRepository;
     this.accountRepository = accountRepository;
+    this.personRepository = personRepository;
   }
   
   @Transactional
@@ -63,13 +67,12 @@ public class PaymentServiceJpa implements PaymentService {
   }
 
   private boolean isPaymentNull(Payment payment) {
-    return payment == null
-            || payment.getSource() == null
-            || payment.getDestination() == null
+    return payment.getSource() == null
             || payment.getSource().getId() == null
+            || payment.getDestination() == null
             || payment.getDestination().getId() == null
-            || payment.getReason() == null
-            || payment.getAmount() == null;
+            || payment.getAmount() == null
+            || payment.getReason() == null;
   }
   
 }
