@@ -1,68 +1,59 @@
 package net.oleksin.paymentsystem.payment;
 
-import net.oleksin.paymentsystem.account.Account;
+import lombok.Value;
+import net.oleksin.paymentsystem.Converter;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
 @RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE,
         MediaType.APPLICATION_XML_VALUE })
-@RestController
 public class PaymentController {
   
   private final PaymentService paymentService;
   private final BatchPaymentService batchPaymentService;
+  private final Converter<PaymentRequestDto, PaymentResponseDto, Payment> paymentConverter;
   
-  public PaymentController(PaymentService paymentService, BatchPaymentService batchPaymentService) {
+  public PaymentController(PaymentService paymentService, BatchPaymentService batchPaymentService, Converter<PaymentRequestDto, PaymentResponseDto, Payment> paymentConverter) {
     this.paymentService = paymentService;
     this.batchPaymentService = batchPaymentService;
+    this.paymentConverter = paymentConverter;
   }
   
-  @PostMapping(value = "/payment",
-          consumes = { MediaType.APPLICATION_JSON_VALUE,
-                  MediaType.APPLICATION_XML_VALUE })
+  @PostMapping(value = "/payment")
   public PaymentResponseDto createPayment(PaymentRequestDto paymentRequestDto) {
-    return toResponseDto(paymentService.createNewPayment(fromRequestDto(paymentRequestDto)));
+    Payment payment = paymentService.createNewPayment(paymentConverter.fromRequestDto(paymentRequestDto));
+    return paymentConverter.toResponseDto(payment);
   }
 
-  @PostMapping(value = "/payments",
-          consumes = { MediaType.APPLICATION_JSON_VALUE,
-          MediaType.APPLICATION_XML_VALUE })
-  public Set<PaymentResponseDto> createPayment(Set<Payment> payments) {
-    return toResponseDto(batchPaymentService.createNewPayments(payments));
-  }
-
-  private Set<PaymentResponseDto> toResponseDto(Set<Payment> payments) {
-    return payments
-            .stream()
-            .map(payment -> PaymentResponseDto.builder()
-                    .id(payment.getId())
-                    .status(payment.getStatus())
-                    .build())
-            .collect(Collectors.toSet());
+  @PostMapping(value = "/payments")
+  public List<PaymentResponseDto> createPayment(List<PaymentRequestDto> paymentRequestDtoSet) {
+    List<Payment> payments = batchPaymentService.createNewPayments(paymentRequestDtoSet.stream()
+            .map(paymentConverter::fromRequestDto)
+            .collect(Collectors.toList()));
+    return payments.stream()
+            .map(paymentConverter::toResponseDto)
+            .collect(Collectors.toList());
   }
   
-  private PaymentResponseDto toResponseDto(Payment payment) {
-    return PaymentResponseDto.builder().id(payment.getId()).build();
+  @GetMapping(value = "/payments")
+  public List<PaymentJournalDto> GetPaymentJournal(Long payerId, Long recipientId, Long srcAccId, Long destAccId) {
+    //todo delete it in the future(USING ONLY FOR MANUAL TESTING)
+    if (payerId == null && recipientId == null && srcAccId == null && destAccId == null) {
+      payerId = 1L;
+      recipientId = 1L;
+      srcAccId = 2L;
+      destAccId = 3L;
+    }
+    List<PaymentJournalDto> paymentJournalDtos = batchPaymentService.getPaymentJournals(payerId, recipientId, srcAccId, destAccId);
+    return paymentJournalDtos;
   }
   
-  private Payment fromRequestDto(PaymentRequestDto paymentRequestDto) {
-    return Payment.builder()
-            .source(fromRequestDto(paymentRequestDto.getSourceAccountId()))
-            .destination(fromRequestDto(paymentRequestDto.getSourceAccountId()))
-            .amount(paymentRequestDto.getAmount())
-            .reason(paymentRequestDto.getReason())
-            .build();
-  }
-  
-  private Account fromRequestDto(Long id) {
-    return Account.builder()
-            .id(id)
-            .build();
-  }
 
 }

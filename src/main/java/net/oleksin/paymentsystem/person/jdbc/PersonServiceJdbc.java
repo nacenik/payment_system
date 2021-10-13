@@ -2,8 +2,8 @@ package net.oleksin.paymentsystem.person.jdbc;
 
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.accounttype.AccountType;
-import net.oleksin.paymentsystem.person.PersonService;
 import net.oleksin.paymentsystem.person.Person;
+import net.oleksin.paymentsystem.person.PersonService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
-import javax.sql.RowSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;

@@ -5,7 +5,6 @@ import net.oleksin.paymentsystem.account.jpa.AccountRepository;
 import net.oleksin.paymentsystem.exception.AccountNotFoundException;
 import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
 import net.oleksin.paymentsystem.payment.Payment;
-import net.oleksin.paymentsystem.payment.PaymentRequestDto;
 import net.oleksin.paymentsystem.payment.PaymentService;
 import net.oleksin.paymentsystem.payment.Status;
 import net.oleksin.paymentsystem.person.jpa.PersonRepository;

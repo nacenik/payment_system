@@ -1,7 +1,7 @@
 package net.oleksin.paymentsystem.payment.jdbc;
 
-import net.oleksin.paymentsystem.payment.PaymentService;
 import net.oleksin.paymentsystem.payment.Payment;
+import net.oleksin.paymentsystem.payment.PaymentService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
@@ -35,7 +35,7 @@ public class PaymentServiceJdbc implements PaymentService {
             preparedStatement.setBigDecimal(2, payment.getAmount());
             preparedStatement.setString(3, payment.getReason());
             preparedStatement.setTimestamp(4, Timestamp.valueOf(payment.getTimestamp()));
-            preparedStatement.setString(5, payment.getStatus().getStatusString());
+            preparedStatement.setString(5, payment.getStatus().getName());
             preparedStatement.setObject(6, payment.getSource());
             preparedStatement.setObject(7, payment.getDestination());
 

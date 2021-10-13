@@ -14,6 +14,7 @@ import java.util.Set;
 @Getter
 public class PersonRequestDto {
   
+  private Long id;
   private final String firstName;
   private final String lastName;
   private final Set<AccountDto> accounts;

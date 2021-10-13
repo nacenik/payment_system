@@ -4,13 +4,13 @@ public enum Status {
   OK("ok"),
   ERROR("error");
   
-  private final String status;
+  private final String name;
   
-  Status(String status) {
-    this.status = status;
+  Status(String name) {
+    this.name = name;
   }
   
-  public String getStatusString() {
-    return status;
+  public String getName() {
+    return name;
   }
 }

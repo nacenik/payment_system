@@ -6,7 +6,6 @@ import net.oleksin.paymentsystem.account.Account;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
