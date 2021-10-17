@@ -183,6 +183,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jpa/BatchPaymentServiceJpa.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jpa/HibernateUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jpa/PaymentServiceJpa.java">
           <value>
             <set />
@@ -209,6 +219,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/person/PersonController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/person/PersonResponseDto.java">
           <value>
             <set />
           </value>
