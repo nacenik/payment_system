@@ -1,5 +1,6 @@
-package net.oleksin.paymentsystem.account;
+package net.oleksin.paymentsystem.account.jdbc;
 
+import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.jdbc.AccountServiceJdbc;
 import net.oleksin.paymentsystem.person.Person;
 import org.junit.jupiter.api.Test;

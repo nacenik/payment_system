@@ -2,6 +2,7 @@ package net.oleksin.paymentsystem.account.jpa;
 
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountService;
+import net.oleksin.paymentsystem.exception.AccountNotFoundException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,8 @@ public class AccountServiceJpa implements AccountService {
   @Transactional
   @Override
   public Account getAccountById(Long id) {
-    return accountRepository.getById(id);
+    return accountRepository.findById(id)
+            .orElseThrow(AccountNotFoundException::new);
   }
 
 }

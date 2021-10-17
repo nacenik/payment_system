@@ -36,13 +36,13 @@ class PersonServiceJdbcTest {
   private static final Long ID = 1234L;
   
   @Mock
-  JdbcTemplate jdbcTemplate;
+  private JdbcTemplate jdbcTemplate;
   
   @Mock
   private SqlRowSet sqlRowSet;
   
   @InjectMocks
-  PersonServiceJdbc personServiceJdbc;
+  private PersonServiceJdbc personServiceJdbc;
   
   @Mock
   private ResultSet resultSet;
@@ -56,7 +56,7 @@ class PersonServiceJdbcTest {
   @Captor
   private ArgumentCaptor<PreparedStatementCallback<Person>> preparedStatementCallbackCaptor;
   
-  Person person;
+  private Person person;
   
   @BeforeEach
   void setUp() {

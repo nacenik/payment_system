@@ -1,6 +1,8 @@
 package net.oleksin.paymentsystem.person;
 
+import net.oleksin.paymentsystem.Converter;
 import net.oleksin.paymentsystem.account.Account;
+import net.oleksin.paymentsystem.account.AccountDto;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,12 +34,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PersonControllerTest {
   
   @Mock
-  PersonService personService;
+  private PersonService personService;
+  @Mock
+  private Converter<AccountDto, AccountDto, Account> accountConverter;
+  @Mock
+  private Converter<PersonRequestDto, PersonResponseDto, Person> personConverter;
   
   @InjectMocks
-  PersonController personController;
+  private PersonController personController;
   
-  MockMvc mockMvc;
+  private MockMvc mockMvc;
   
   @BeforeEach
   void setUp() {
@@ -48,9 +54,8 @@ class PersonControllerTest {
   void createPersonForJsonTest() throws Exception {
     when(personService.saveNewPerson(any())).thenReturn(Person.builder().id(1L).build());
     
-    mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+    mockMvc.perform(post("/persons").contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk());
     
     verify(personService, times(1))
             .saveNewPerson(any());
@@ -61,9 +66,8 @@ class PersonControllerTest {
     when(personService.saveNewPerson(any()))
             .thenReturn(Person.builder().id(1L).build());
     
-    mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_XML_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+    mockMvc.perform(post("/persons").contentType(MediaType.APPLICATION_XML_VALUE))
+            .andExpect(status().isOk());
     
     verify(personService, times(1))
             .saveNewPerson(any());
@@ -74,7 +78,7 @@ class PersonControllerTest {
     when(personService.getAllPersons())
             .thenReturn(List.of(Person.builder().id(1L).build(), Person.builder().id(2L).build()));
     
-    mockMvc.perform(get("/person").contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(get("/persons").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   
@@ -87,9 +91,8 @@ class PersonControllerTest {
     when(personService.getPersonById(anyLong()))
             .thenReturn(Person.builder().id(1L).build());
   
-    mockMvc.perform(get("/person/1").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    mockMvc.perform(get("/persons/1").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
   
     verify(personService, times(1))
             .getPersonById(anyLong());
@@ -100,7 +103,7 @@ class PersonControllerTest {
     when(personService.getAccountsByPersonId(anyLong()))
             .thenReturn(Set.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()));
   
-    mockMvc.perform(get("/person/1/account").contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(get("/persons/1/accounts").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   

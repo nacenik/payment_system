@@ -22,12 +22,12 @@ class PersonServiceJpaTest {
   final String NAME = "test";
   
   @Mock
-  PersonRepository personRepository;
+  private PersonRepository personRepository;
   
   @InjectMocks
-  PersonServiceJpa personServiceJpa;
+  private PersonServiceJpa personServiceJpa;
   
-  Person person;
+  private Person person;
   
   
   @BeforeEach
@@ -140,6 +140,7 @@ class PersonServiceJpaTest {
       personServiceJpa.getPersonById(1L);
     });
     assertNotNull(thrown);
+    assertEquals(PersonNotFoundException.class, thrown.getClass());
     verify(personRepository, times(1)).findById(anyLong());
   }
 }
