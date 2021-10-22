@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @Setter
+@ToString
 public class Account implements Serializable {
   
   @Id

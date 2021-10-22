@@ -47,9 +47,6 @@ public class PaymentController {
     //todo delete it in the future(USING ONLY FOR MANUAL TESTING)
     if (payerId == null && recipientId == null && srcAccId == null && destAccId == null) {
       payerId = 1L;
-      recipientId = 1L;
-      srcAccId = 2L;
-      destAccId = 3L;
     }
     List<PaymentJournalDto> paymentJournalDtos = batchPaymentService.getPaymentJournals(payerId, recipientId, srcAccId, destAccId);
     return paymentJournalDtos;

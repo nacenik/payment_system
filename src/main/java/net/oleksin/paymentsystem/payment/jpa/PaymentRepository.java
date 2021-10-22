@@ -23,18 +23,18 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
           " recipient.first_name as recipient_first_name, " +
           " recipient.last_name as recipient_last_name" +
           " from payments" +
-          " join accounts as source_account" +
+          " left join accounts as source_account" +
           " on payments.source_id = source_account.id" +
-          " join accounts as destination_account" +
+          " left join accounts as destination_account" +
           " on payments.destination_id = destination_account.id" +
-          " join persons as payer" +
+          " left join persons as payer" +
           " on source_account.person_id = payer.id" +
-          " join persons as recipient" +
+          " left join persons as recipient" +
           " on destination_account.person_id = recipient.id" +
-          " where source_account.person_id = ?" +
-          " and destination_account.person_id = ?" +
-          " and payments.source_id = ?" +
-          " and payments.destination_id = ?",
+          " where payments.source_id = ? and payments.source_id is not null" +
+          " and payments.destination_id = ? and payments.destination_id is not null" +
+          " and source_account.person_id = ? and source_account.person_id is not null" +
+          " and destination_account.person_id = ? and destination_account.person_id is not null",
           nativeQuery = true)
-  List<Object[]> getPaymentJournal(Long payerId, Long recipientId, Long srcAccId, Long destAccId);
+  List<Object[]> getPaymentJournal(Long rcAccId, Long destAccId, Long payerId, Long recipientId);
 }

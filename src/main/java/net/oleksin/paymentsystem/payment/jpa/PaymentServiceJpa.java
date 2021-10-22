@@ -51,11 +51,11 @@ public class PaymentServiceJpa implements PaymentService {
       newPayment.setAmount(payment.getAmount());
       
       if(sourceAccount.getBalance().compareTo(newPayment.getAmount()) > 0) {
-        newPayment.setStatus(Status.ERROR);
+        newPayment.setStatus(Status.error);
       } else {
         sourceAccount.setBalance(sourceAmount.subtract(newPayment.getAmount()));
         destinationAccount.setBalance(destinationAmount.add(newPayment.getAmount()));
-        newPayment.setStatus(Status.OK);
+        newPayment.setStatus(Status.ok);
       }
   
       newPayment.setTimestamp(LocalDateTime.now());
