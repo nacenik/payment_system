@@ -23,6 +23,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/Converter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/FromRequestConverter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/IndexController.java">
           <value>
             <set />
@@ -34,6 +44,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/PaymentSystemApplication.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/ToResponseConverter.java">
           <value>
             <set />
           </value>
@@ -163,6 +178,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/PaymentResponseDto.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/PaymentService.java">
           <value>
             <set />
@@ -214,6 +234,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jpa/HibernateUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jpa/PaymentJournal.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/jpa/PaymentJournalConverter.java">
           <value>
             <set />
           </value>

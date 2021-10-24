@@ -1,6 +1,5 @@
 package net.oleksin.paymentsystem.payment;
 
-import lombok.Value;
 import net.oleksin.paymentsystem.Converter;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
