@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE,
+@RequestMapping(value = "/api",produces = { MediaType.APPLICATION_JSON_VALUE,
         MediaType.APPLICATION_XML_VALUE })
 public class PaymentController {
   
@@ -24,7 +24,7 @@ public class PaymentController {
     this.batchPaymentService = batchPaymentService;
     this.paymentConverter = paymentConverter;
   }
-  
+
   @PostMapping(value = "/payment")
   public PaymentResponseDto createPayment(PaymentRequestDto paymentRequestDto) {
     Payment payment = paymentService.createNewPayment(paymentConverter.fromRequestDto(paymentRequestDto));
