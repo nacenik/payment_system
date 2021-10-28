@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 public class AccountType implements Serializable {
   
   @Id

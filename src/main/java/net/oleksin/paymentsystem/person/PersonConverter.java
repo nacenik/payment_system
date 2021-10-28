@@ -28,7 +28,6 @@ public class PersonConverter implements Converter<PersonRequestDto, PersonRespon
   @Override
   public Person fromRequestDto(PersonRequestDto personRequestDto) {
     return Person.builder()
-            .id(personRequestDto.getId())
             .firstName(personRequestDto.getFirstName())
             .lastName(personRequestDto.getLastName())
             .accounts(personRequestDto.getAccounts().stream()

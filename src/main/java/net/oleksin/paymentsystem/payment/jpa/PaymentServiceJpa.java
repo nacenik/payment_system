@@ -14,55 +14,61 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @Profile({"springJpaProfile", "default"})
 public class PaymentServiceJpa implements PaymentService {
-  
+
   private final PaymentRepository paymentRepository;
   private final AccountRepository accountRepository;
   private final PersonRepository personRepository;
-  
+
   public PaymentServiceJpa(PaymentRepository paymentRepository, AccountRepository accountRepository, PersonRepository personRepository) {
     this.paymentRepository = paymentRepository;
     this.accountRepository = accountRepository;
     this.personRepository = personRepository;
   }
-  
+
   @Transactional
   @Override
   public Payment createNewPayment(Payment payment) {
     if (isPaymentNull(payment)) {
       throw new PaymentNotFoundException();
     }
-    Account sourceAccount = accountRepository.getById(payment.getSource().getId());
-    Account destinationAccount = accountRepository.getById(payment.getDestination().getId());
-    
+    Optional<Account> sourceAccountOptional = accountRepository.findById(payment.getSource().getId());
+    Optional<Account> destinationAccountOptional = accountRepository.findById(payment.getDestination().getId());
+
+    if (sourceAccountOptional.isEmpty()) {
+      throw new AccountNotFoundException("Source account not found!");
+    }
+    if (destinationAccountOptional.isEmpty()) {
+      throw new AccountNotFoundException("Destination account not found!");
+    }
+    Account sourceAccount = sourceAccountOptional.get();
+    Account destinationAccount = destinationAccountOptional.get();
+
     BigDecimal sourceAmount = sourceAccount.getBalance();
     BigDecimal destinationAmount = destinationAccount.getBalance();
-  
-    if (sourceAmount == null || destinationAmount == null) {
-      throw new AccountNotFoundException();
+
+    Payment newPayment = new Payment();
+    newPayment.setSource(sourceAccount);
+    newPayment.setDestination(destinationAccount);
+    newPayment.setReason(payment.getReason());
+    newPayment.setAmount(payment.getAmount());
+
+    if(sourceAccount.getBalance().compareTo(newPayment.getAmount()) > 0) {
+      newPayment.setStatus(Status.error);
     } else {
-      Payment newPayment = new Payment();
-      newPayment.setSource(sourceAccount);
-      newPayment.setDestination(destinationAccount);
-      newPayment.setReason(payment.getReason());
-      newPayment.setAmount(payment.getAmount());
-      
-      if(sourceAccount.getBalance().compareTo(newPayment.getAmount()) > 0) {
-        newPayment.setStatus(Status.error);
-      } else {
-        sourceAccount.setBalance(sourceAmount.subtract(newPayment.getAmount()));
-        destinationAccount.setBalance(destinationAmount.add(newPayment.getAmount()));
-        newPayment.setStatus(Status.ok);
-      }
-  
-      newPayment.setTimestamp(LocalDateTime.now());
-      
-      return paymentRepository.save(newPayment);
+      sourceAccount.setBalance(sourceAmount.subtract(newPayment.getAmount()));
+      destinationAccount.setBalance(destinationAmount.add(newPayment.getAmount()));
+      newPayment.setStatus(Status.ok);
     }
-    
+
+    newPayment.setTimestamp(LocalDateTime.now());
+
+    return paymentRepository.save(newPayment);
+
   }
 
   private boolean isPaymentNull(Payment payment) {
@@ -73,5 +79,5 @@ public class PaymentServiceJpa implements PaymentService {
             || payment.getAmount() == null
             || payment.getReason() == null;
   }
-  
+
 }

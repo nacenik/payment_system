@@ -45,7 +45,6 @@ class PersonConverterTest {
             .build();
   
     personRequestDto = PersonRequestDto.builder()
-            .id(person.getId())
             .firstName(person.getFirstName())
             .lastName(person.getLastName())
             .accounts(Set.of(accountDto))
@@ -69,7 +68,6 @@ class PersonConverterTest {
     Person expected = personConverter.fromRequestDto(personRequestDto);
     
     assertNotNull(expected);
-    assertEquals(personRequestDto.getId(), person.getId());
     assertEquals(personRequestDto.getFirstName(), person.getFirstName());
     assertEquals(personRequestDto.getLastName(), person.getLastName());
     assertEquals(personRequestDto.getAccounts().size(), person.getAccounts().size());
