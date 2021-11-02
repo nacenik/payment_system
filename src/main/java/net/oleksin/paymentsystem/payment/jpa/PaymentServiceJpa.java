@@ -3,19 +3,15 @@ package net.oleksin.paymentsystem.payment.jpa;
 import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.jpa.AccountRepository;
-import net.oleksin.paymentsystem.exception.AccountNotFoundException;
 import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
 import net.oleksin.paymentsystem.payment.AbstractPaymentService;
 import net.oleksin.paymentsystem.payment.Payment;
 import net.oleksin.paymentsystem.payment.PaymentService;
 import net.oleksin.paymentsystem.payment.Status;
-import net.oleksin.paymentsystem.person.jpa.PersonRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service

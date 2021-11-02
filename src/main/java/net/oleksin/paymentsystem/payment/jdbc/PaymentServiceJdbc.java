@@ -1,10 +1,8 @@
 package net.oleksin.paymentsystem.payment.jdbc;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.accounttype.AccountType;
-import net.oleksin.paymentsystem.exception.AccountNotFoundException;
 import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
 import net.oleksin.paymentsystem.payment.AbstractPaymentService;
 import net.oleksin.paymentsystem.payment.Payment;
@@ -12,18 +10,16 @@ import net.oleksin.paymentsystem.payment.PaymentService;
 import net.oleksin.paymentsystem.payment.Status;
 import net.oleksin.paymentsystem.person.Person;
 import org.springframework.context.annotation.Profile;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
-import java.sql.*;
-import java.time.LocalDateTime;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Service
