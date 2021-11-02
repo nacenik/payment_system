@@ -1,9 +1,11 @@
 package net.oleksin.paymentsystem.payment.jpa;
 
+import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.jpa.AccountRepository;
 import net.oleksin.paymentsystem.exception.AccountNotFoundException;
 import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
+import net.oleksin.paymentsystem.payment.AbstractPaymentService;
 import net.oleksin.paymentsystem.payment.Payment;
 import net.oleksin.paymentsystem.payment.PaymentService;
 import net.oleksin.paymentsystem.payment.Status;
@@ -17,67 +19,31 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 @Profile({"springJpaProfile", "default"})
-public class PaymentServiceJpa implements PaymentService {
+public class PaymentServiceJpa extends AbstractPaymentService implements PaymentService {
 
   private final PaymentRepository paymentRepository;
   private final AccountRepository accountRepository;
-  private final PersonRepository personRepository;
-
-  public PaymentServiceJpa(PaymentRepository paymentRepository, AccountRepository accountRepository, PersonRepository personRepository) {
-    this.paymentRepository = paymentRepository;
-    this.accountRepository = accountRepository;
-    this.personRepository = personRepository;
-  }
 
   @Transactional
   @Override
   public Payment createNewPayment(Payment payment) {
-    if (isPaymentNull(payment)) {
-      throw new PaymentNotFoundException();
+    if (super.isPaymentNull(payment)) {
+      throw new PaymentNotFoundException("Payment doesn't contains valid fields");
     }
     Optional<Account> sourceAccountOptional = accountRepository.findById(payment.getSource().getId());
     Optional<Account> destinationAccountOptional = accountRepository.findById(payment.getDestination().getId());
 
-    if (sourceAccountOptional.isEmpty()) {
-      throw new AccountNotFoundException("Source account not found!");
+    Payment newPayment = super.createNewPayment(payment, sourceAccountOptional, destinationAccountOptional);
+
+    if (newPayment.getStatus().equals(Status.ok)) {
+      accountRepository.save(sourceAccountOptional.get());
+      accountRepository.save(destinationAccountOptional.get());
     }
-    if (destinationAccountOptional.isEmpty()) {
-      throw new AccountNotFoundException("Destination account not found!");
-    }
-    Account sourceAccount = sourceAccountOptional.get();
-    Account destinationAccount = destinationAccountOptional.get();
-
-    BigDecimal sourceAmount = sourceAccount.getBalance();
-    BigDecimal destinationAmount = destinationAccount.getBalance();
-
-    Payment newPayment = new Payment();
-    newPayment.setSource(sourceAccount);
-    newPayment.setDestination(destinationAccount);
-    newPayment.setReason(payment.getReason());
-    newPayment.setAmount(payment.getAmount());
-
-    if(sourceAccount.getBalance().compareTo(newPayment.getAmount()) > 0) {
-      newPayment.setStatus(Status.error);
-    } else {
-      sourceAccount.setBalance(sourceAmount.subtract(newPayment.getAmount()));
-      destinationAccount.setBalance(destinationAmount.add(newPayment.getAmount()));
-      newPayment.setStatus(Status.ok);
-    }
-
-    newPayment.setTimestamp(LocalDateTime.now());
 
     return paymentRepository.save(newPayment);
 
-  }
-
-  private boolean isPaymentNull(Payment payment) {
-    return payment.getSource() == null
-            || payment.getSource().getId() == null
-            || payment.getDestination() == null
-            || payment.getDestination().getId() == null
-            || payment.getAmount() == null
-            || payment.getReason() == null;
   }
 
 }

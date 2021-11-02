@@ -1,5 +1,6 @@
 package net.oleksin.paymentsystem.payment.jpa;
 
+import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.ToResponseConverter;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.Account_;
@@ -21,17 +22,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Profile({"springJpaProfile", "default"})
+@AllArgsConstructor
 public class BatchPaymentServiceJpa implements BatchPaymentService {
   
   private final PaymentService paymentService;
   private final EntityManagerFactory entityManagerFactory;
   private final ToResponseConverter<PaymentJournalDto, PaymentJournal> toResponseConverter;
-  
-  public BatchPaymentServiceJpa(PaymentService paymentService, EntityManagerFactory entityManagerFactory, ToResponseConverter<PaymentJournalDto, PaymentJournal> toResponseConverter) {
-    this.paymentService = paymentService;
-    this.entityManagerFactory = entityManagerFactory;
-    this.toResponseConverter = toResponseConverter;
-  }
   
   @Override
   public List<Payment> createNewPayments(List<Payment> payments) {
@@ -52,7 +48,7 @@ public class BatchPaymentServiceJpa implements BatchPaymentService {
             .collect(Collectors.toList());
   }
 
-  public List<PaymentJournal> getPaymentJournal(Long payerId, Long recipientId, Long srcAccId, Long destAccId) {
+  private List<PaymentJournal> getPaymentJournal(Long payerId, Long recipientId, Long srcAccId, Long destAccId) {
 
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     entityManager.getTransaction().begin();
@@ -91,7 +87,6 @@ public class BatchPaymentServiceJpa implements BatchPaymentService {
     Predicate orRecipientPredicate = criteriaBuilder.or(recipientPredicate, isNullRecipient);
 
     Predicate and = criteriaBuilder.and(orSrcAccPredicate, orDestAccPredicate, orPayerPredicate, orRecipientPredicate);
-
 
     criteriaQuery.where(and);
 

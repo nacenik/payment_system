@@ -1,5 +1,6 @@
 package net.oleksin.paymentsystem.payment.jdbc;
 
+import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.payment.BatchPaymentService;
 import net.oleksin.paymentsystem.payment.Payment;
 import net.oleksin.paymentsystem.payment.PaymentJournalDto;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @Profile("jdbcTemplate")
+@AllArgsConstructor
 public class BatchPaymentServiceJdbc implements BatchPaymentService {
     private static final String NOT = "not";
     private static final String EMPTY = "";
@@ -42,11 +44,6 @@ public class BatchPaymentServiceJdbc implements BatchPaymentService {
     
     private final PaymentService paymentService;
     private final NamedParameterJdbcTemplate jdbcTemplate;
-
-    public BatchPaymentServiceJdbc(PaymentService paymentService, NamedParameterJdbcTemplate jdbcTemplate) {
-        this.paymentService = paymentService;
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public List<Payment> createNewPayments(List<Payment> payments) {
@@ -83,8 +80,14 @@ public class BatchPaymentServiceJdbc implements BatchPaymentService {
                     .sourceAccountNumber(sqlRowSet.getString("source_account_number"))
                     .destinationAccountNumber(sqlRowSet.getString("destination_account_number"))
                     .amount(sqlRowSet.getBigDecimal("amount"))
-                    .payer(PersonResponseDto.builder().firstName(sqlRowSet.getString("payer_first_name")).lastName(sqlRowSet.getString("payer_last_name")).build())
-                    .recipient(PersonResponseDto.builder().firstName(sqlRowSet.getString("recipient_first_name")).lastName(sqlRowSet.getString("recipient_last_name")).build())
+                    .payer(PersonResponseDto.builder()
+                            .firstName(sqlRowSet.getString("payer_first_name"))
+                            .lastName(sqlRowSet.getString("payer_last_name"))
+                            .build())
+                    .recipient(PersonResponseDto.builder()
+                            .firstName(sqlRowSet.getString("recipient_first_name"))
+                            .lastName(sqlRowSet.getString("recipient_last_name"))
+                            .build())
                     .build());
         }
         return list;

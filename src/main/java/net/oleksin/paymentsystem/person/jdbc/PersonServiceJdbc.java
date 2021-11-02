@@ -1,5 +1,6 @@
 package net.oleksin.paymentsystem.person.jdbc;
 
+import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.person.Person;
@@ -13,12 +14,12 @@ import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Profile("jdbcTemplate")
+@AllArgsConstructor
 public class PersonServiceJdbc implements PersonService {
 
     private static final String SQL_INSERT =
@@ -40,10 +41,6 @@ public class PersonServiceJdbc implements PersonService {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public PersonServiceJdbc(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Override
     public Person saveNewPerson(Person person) {
         return jdbcTemplate.execute(SQL_INSERT, getInsertCallBack(person));
@@ -60,10 +57,10 @@ public class PersonServiceJdbc implements PersonService {
     }
     
     @Override
-    public Set<Account> getAccountsByPersonId(Long id) {
+    public List<Account> getAccountsByPersonId(Long id) {
         SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_SELECT_ACCOUNTS_BY_PERSON_ID, id);
 
-        Set<Account> accounts = new HashSet<>();
+        List<Account> accounts = new ArrayList<>();
         rs.beforeFirst();
         while (rs.next()) {
             AccountType accountType = AccountType.builder()

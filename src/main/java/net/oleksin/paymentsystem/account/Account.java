@@ -1,8 +1,12 @@
 package net.oleksin.paymentsystem.account;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.person.Person;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,14 +14,11 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "accounts")
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-public class Account implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Account implements Serializable, Persistable<Long> {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +37,9 @@ public class Account implements Serializable {
   @ManyToOne
   @JoinColumn(name = "person_id")
   private Person person;
+
+  @Override
+  public boolean isNew() {
+    return id == null;
+  }
 }

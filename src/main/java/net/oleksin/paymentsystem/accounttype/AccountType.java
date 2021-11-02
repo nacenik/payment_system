@@ -1,18 +1,19 @@
 package net.oleksin.paymentsystem.accounttype;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "types")
+@Table(name = "account_types")
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Getter
-@Setter
-@EqualsAndHashCode
 public class AccountType implements Serializable {
   
   @Id

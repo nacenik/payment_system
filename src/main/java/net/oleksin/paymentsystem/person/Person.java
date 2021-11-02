@@ -1,21 +1,22 @@
 package net.oleksin.paymentsystem.person;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "persons")
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person implements Serializable {
   
   @Id
@@ -28,6 +29,6 @@ public class Person implements Serializable {
   @Column(name = "last_name")
   private String lastName;
   
-  @OneToMany(mappedBy = "person")
-  private Set<Account> accounts = new HashSet<>();
+  @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+  private List<Account> accounts = new ArrayList<>();
 }

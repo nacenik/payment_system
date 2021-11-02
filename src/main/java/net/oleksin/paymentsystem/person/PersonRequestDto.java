@@ -1,25 +1,31 @@
 package net.oleksin.paymentsystem.person;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.oleksin.paymentsystem.account.AccountDto;
 
-import java.util.Set;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @Schema(description = "Request person entity")
-@AllArgsConstructor
+@JsonDeserialize(builder = PersonRequestDto.PersonRequestDtoBuilder.class)
+@XmlRootElement
+@Data
 @Builder
-@Setter
-@Getter
-public class PersonRequestDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class PersonRequestDto  {
 
   @Schema(description = "person first name", example = "John")
-  private final String firstName;
+  private String firstName;
+
   @Schema(description = "person last name", example = "Smith")
-  private final String lastName;
+  private String lastName;
+
   @Schema(description = "array of person accounts")
-  private final Set<AccountDto> accounts;
+  private List<AccountDto> accounts;
 }

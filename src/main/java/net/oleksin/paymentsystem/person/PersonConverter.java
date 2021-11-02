@@ -32,7 +32,7 @@ public class PersonConverter implements Converter<PersonRequestDto, PersonRespon
             .lastName(personRequestDto.getLastName())
             .accounts(personRequestDto.getAccounts().stream()
                     .map(accountConverter::fromRequestDto)
-                    .collect(Collectors.toSet()))
+                    .collect(Collectors.toList()))
             .build();
             
   }

@@ -1,5 +1,6 @@
 package net.oleksin.paymentsystem.person.jpa;
 
+import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.exception.PersonNotFoundException;
 import net.oleksin.paymentsystem.person.Person;
@@ -10,17 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Profile({"springJpaProfile", "default"})
+@AllArgsConstructor
 public class PersonServiceJpa implements PersonService {
   private final PersonRepository personRepository;
-  
-  public PersonServiceJpa(PersonRepository personRepository) {
-    this.personRepository = personRepository;
-  }
-  
+
   @Transactional
   @Override
   public Person saveNewPerson(Person person) {
@@ -45,11 +42,11 @@ public class PersonServiceJpa implements PersonService {
 
   @Transactional
   @Override
-  public Set<Account> getAccountsByPersonId(Long id) {
+  public List<Account> getAccountsByPersonId(Long id) {
     Person person = personRepository.findById(id)
             .orElseThrow(PersonNotFoundException::new);
     if (person.getAccounts() == null) {
-      return Collections.emptySet();
+      return Collections.emptyList();
     }
     return person.getAccounts();
   }

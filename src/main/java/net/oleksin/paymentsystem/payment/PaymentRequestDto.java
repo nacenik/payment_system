@@ -1,23 +1,36 @@
 package net.oleksin.paymentsystem.payment;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Schema(description = "Request payment entity")
-@AllArgsConstructor
+@JsonDeserialize(builder = PaymentRequestDto.PaymentRequestDtoBuilder.class)
+@XmlRootElement
+@Data
 @Builder
-@Setter
-@Getter
-public class PaymentRequestDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class PaymentRequestDto implements Serializable {
 
   @Schema(description = "source account id", example = "2")
-  private final Long sourceAccountId;
+  private Long sourceAccountId;
   @Schema(description = "destination account id", example = "3")
-  private final Long destinationAccountId;
+  private Long destinationAccountId;
   @Schema(description = "amount", example = "500.00")
-  private final BigDecimal amount;
+  private BigDecimal amount;
   @Schema(description = "payment reason", example = "for example")
-  private final String reason;
+  private String reason;
+
+  @JsonPOJOBuilder(withPrefix = "")
+  public static class PaymentRequestDtoBuilder {
+  }
 }

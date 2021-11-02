@@ -1,5 +1,6 @@
 package net.oleksin.paymentsystem.account.jdbc;
 
+import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountService;
 import net.oleksin.paymentsystem.person.Person;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 
 @Service
 @Profile("jdbcTemplate")
+@AllArgsConstructor
 public class AccountServiceJdbc implements AccountService {
 
     private static final String SQL_FIND_BY_ID =
@@ -19,10 +21,6 @@ public class AccountServiceJdbc implements AccountService {
                     " where id = ?";
 
     private final JdbcTemplate jdbcTemplate;
-
-    public AccountServiceJdbc(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public Account getAccountById(Long id) {

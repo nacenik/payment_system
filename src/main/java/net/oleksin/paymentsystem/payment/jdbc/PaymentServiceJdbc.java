@@ -1,47 +1,121 @@
 package net.oleksin.paymentsystem.payment.jdbc;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import net.oleksin.paymentsystem.account.Account;
+import net.oleksin.paymentsystem.accounttype.AccountType;
+import net.oleksin.paymentsystem.exception.AccountNotFoundException;
+import net.oleksin.paymentsystem.exception.PaymentNotFoundException;
+import net.oleksin.paymentsystem.payment.AbstractPaymentService;
 import net.oleksin.paymentsystem.payment.Payment;
 import net.oleksin.paymentsystem.payment.PaymentService;
+import net.oleksin.paymentsystem.payment.Status;
+import net.oleksin.paymentsystem.person.Person;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @Profile("jdbcTemplate")
-public class PaymentServiceJdbc implements PaymentService {
+@Data
+public class PaymentServiceJdbc extends AbstractPaymentService implements PaymentService {
 
     private static final String SQL_INSERT =
-            "insert into payments(id, amount, reason, timestamp, status, source_id, destination_id, )" +
-                    " values(?, ?, ?, ?, ?, ?, ?)";
+            "insert into payments(amount, reason, timestamp, status, source_id, destination_id)" +
+                    " values(?, ?, ?, ?, ?, ?)";
+
+    private static final String SQL_FIND_ACCOUNT =
+            "select * from accounts" +
+                    " inner join account_types" +
+                    " on accounts.type_id = account_types.id" +
+                    " inner join persons" +
+                    " on accounts.person_id = persons.id" +
+                    " where accounts.id = ?";
+
+    public static final String SQL_UPDATE_ACCOUNT =
+            "update accounts set balance=?, " +
+                    "where id=?";
 
     private final JdbcTemplate jdbcTemplate;
-
-    public PaymentServiceJdbc(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
+    private final ResultSetExtractor<Account> accountResultSetExtractor;
 
     @Override
     public Payment createNewPayment(Payment payment) {
-        return jdbcTemplate.execute(SQL_INSERT, getInsertCallBack(payment));
+        if (super.isPaymentNull(payment)) {
+            throw new PaymentNotFoundException("Payment doesn't contains valid fields");
+        }
+
+        Optional<Account> sourceAccount = Optional.ofNullable(jdbcTemplate.query(SQL_FIND_ACCOUNT,
+                getResultSetExtractor(),
+                payment.getSource().getId()));
+
+        Optional<Account> destinationAccount = Optional.ofNullable(jdbcTemplate.query(SQL_FIND_ACCOUNT,
+                getResultSetExtractor(),
+                payment.getDestination().getId()));
+
+        Payment newPayment = super.createNewPayment(payment, sourceAccount, destinationAccount);
+
+        if (newPayment.getStatus().equals(Status.ok)) {
+            updateAccountData(sourceAccount.get());
+            updateAccountData(destinationAccount.get());
+        }
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> returnId(connection, newPayment), keyHolder);
+        newPayment.setId(keyHolder.getKey().longValue());
+        return newPayment;
     }
 
-    private PreparedStatementCallback<Payment> getInsertCallBack(Payment payment) {
-        return preparedStatement -> {
-            preparedStatement.setLong(1, payment.getId());
-            preparedStatement.setBigDecimal(2, payment.getAmount());
-            preparedStatement.setString(3, payment.getReason());
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(payment.getTimestamp()));
-            preparedStatement.setString(5, payment.getStatus().getName());
-            preparedStatement.setObject(6, payment.getSource());
-            preparedStatement.setObject(7, payment.getDestination());
-
-            preparedStatement.executeUpdate();
-
-            return payment;
+    private ResultSetExtractor<Account> getResultSetExtractor() {
+        return resultSet -> {
+            if(resultSet.next()) {
+                return Account.builder()
+                        .id(resultSet.getLong(1))
+                        .accountNumber(resultSet.getString("account_number"))
+                        .balance(resultSet.getBigDecimal("balance"))
+                        .accountType(AccountType.builder()
+                                .id(resultSet.getLong("type_id"))
+                                .name(resultSet.getString("name"))
+                                .build())
+                        .person(Person.builder()
+                                .id(resultSet.getLong("person_id"))
+                                .firstName(resultSet.getString("first_name"))
+                                .lastName(resultSet.getString("last_name")).build())
+                        .build();
+            }
+            return null;
         };
     }
+
+    private PreparedStatement returnId(Connection connection, Payment newPayment) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT, new String[] { "id" });
+        preparedStatement.setBigDecimal(1, newPayment.getAmount());
+        preparedStatement.setString(2, newPayment.getReason());
+        preparedStatement.setTimestamp(3, Timestamp.valueOf(newPayment.getTimestamp()));
+        preparedStatement.setString(4, newPayment.getStatus().getName());
+        preparedStatement.setLong(5, newPayment.getSource().getId());
+        preparedStatement.setLong(6, newPayment.getDestination().getId());
+        preparedStatement.executeQuery();
+        return preparedStatement;
+    }
+
+    private void updateAccountData(Account account) {
+        jdbcTemplate.update(SQL_UPDATE_ACCOUNT,
+                account.getBalance(),
+                account.getId());
+
+    }
+
+
 }

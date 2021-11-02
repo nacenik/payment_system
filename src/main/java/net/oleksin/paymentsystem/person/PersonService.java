@@ -3,7 +3,6 @@ package net.oleksin.paymentsystem.person;
 import net.oleksin.paymentsystem.account.Account;
 
 import java.util.List;
-import java.util.Set;
 
 public interface PersonService {
   Person saveNewPerson(Person person);
@@ -12,5 +11,5 @@ public interface PersonService {
   
   Person getPersonById(Long id);
   
-  Set<Account> getAccountsByPersonId(Long id);
+  List<Account> getAccountsByPersonId(Long id);
 }

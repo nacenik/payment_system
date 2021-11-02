@@ -1,16 +1,12 @@
 package net.oleksin.paymentsystem.payment;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Schema(description = "Response payment entity")
-@AllArgsConstructor
 @Builder
-@Setter
-@Getter
+@Data
 public class PaymentResponseDto {
 
   @Schema(description = "payment id", example = "123")
