@@ -10,13 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,7 +30,7 @@ class PersonConverterTest {
   private PersonRequestDto personRequestDto;
   private Account account;
   private AccountDto accountDto;
-  
+
   @BeforeEach
   void setUp() {
     accountDto = AccountDto.builder().id(1L).build();
@@ -41,13 +39,13 @@ class PersonConverterTest {
             .id(1L)
             .firstName("test")
             .lastName("test")
-            .accounts(Set.of(account))
+            .accounts(List.of(account))
             .build();
   
     personRequestDto = PersonRequestDto.builder()
             .firstName(person.getFirstName())
             .lastName(person.getLastName())
-            .accounts(Set.of(accountDto))
+            .accounts(List.of(accountDto))
             .build();
   }
   

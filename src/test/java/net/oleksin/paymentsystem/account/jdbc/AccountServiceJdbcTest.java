@@ -1,7 +1,6 @@
 package net.oleksin.paymentsystem.account.jdbc;
 
 import net.oleksin.paymentsystem.account.Account;
-import net.oleksin.paymentsystem.account.jdbc.AccountServiceJdbc;
 import net.oleksin.paymentsystem.person.Person;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +16,8 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;

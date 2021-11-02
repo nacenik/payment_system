@@ -10,7 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +39,7 @@ class PersonServiceJpaTest {
             .id(1L)
             .firstName(NAME)
             .lastName(NAME)
-            .accounts(Set.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()))
+            .accounts(List.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()))
             .build();
   }
   
@@ -91,11 +94,11 @@ class PersonServiceJpaTest {
   
   @Test
   void getAccountsByPersonIdTest() {
-    Set<Account> accounts = Set.of(Account.builder().id(1L).build(), Account.builder().id(2L).build());
+    List<Account> accounts = List.of(Account.builder().id(1L).build(), Account.builder().id(2L).build());
     person.setAccounts(accounts);
     
     when(personRepository.findById(anyLong())).thenReturn(Optional.of(person));
-    Set<Account> expectedAccounts = personServiceJpa.getAccountsByPersonId(1L);
+    List<Account> expectedAccounts = personServiceJpa.getAccountsByPersonId(1L);
     
     assertNotNull(expectedAccounts);
     assertFalse(expectedAccounts.isEmpty());
@@ -110,7 +113,7 @@ class PersonServiceJpaTest {
     person.setAccounts(null);
     
     when(personRepository.findById(anyLong())).thenReturn(Optional.of(person));
-    Set<Account> expectedAccounts = personServiceJpa.getAccountsByPersonId(1L);
+    List<Account> expectedAccounts = personServiceJpa.getAccountsByPersonId(1L);
     
     assertNotNull(expectedAccounts);
     assertTrue(expectedAccounts.isEmpty());
@@ -120,10 +123,10 @@ class PersonServiceJpaTest {
   
   @Test
   void getAccountsByPersonIdWithEmptyAccountsTest() {
-    person.setAccounts(Collections.emptySet());
+    person.setAccounts(Collections.emptyList());
     
     when(personRepository.findById(anyLong())).thenReturn(Optional.of(person));
-    Set<Account> expectedAccounts = personServiceJpa.getAccountsByPersonId(1L);
+    List<Account> expectedAccounts = personServiceJpa.getAccountsByPersonId(1L);
     
     assertNotNull(expectedAccounts);
     assertTrue(expectedAccounts.isEmpty());
@@ -133,7 +136,7 @@ class PersonServiceJpaTest {
   
   @Test
   void getAccountsByPersonIdExceptionTest() {
-    person.setAccounts(Collections.emptySet());
+    person.setAccounts(Collections.emptyList());
   
     when(personRepository.findById(anyLong())).thenReturn(Optional.empty());
     Throwable thrown = assertThrows(PersonNotFoundException.class, () -> {

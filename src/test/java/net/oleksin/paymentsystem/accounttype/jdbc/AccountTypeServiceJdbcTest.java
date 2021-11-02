@@ -1,7 +1,6 @@
 package net.oleksin.paymentsystem.accounttype.jdbc;
 
 import net.oleksin.paymentsystem.accounttype.AccountType;
-import net.oleksin.paymentsystem.person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,8 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 

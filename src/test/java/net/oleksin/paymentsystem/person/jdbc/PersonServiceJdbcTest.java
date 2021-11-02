@@ -1,12 +1,14 @@
 package net.oleksin.paymentsystem.person.jdbc;
 
 import net.oleksin.paymentsystem.account.Account;
-import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,10 +20,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -64,7 +63,7 @@ class PersonServiceJdbcTest {
             .id(1L)
             .firstName(NAME)
             .lastName(NAME)
-            .accounts(Set.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()))
+            .accounts(List.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()))
             .build();
   }
   
@@ -136,7 +135,7 @@ class PersonServiceJdbcTest {
     when(sqlRowSet.getBigDecimal(3))
             .thenReturn(new BigDecimal(ID), new BigDecimal(ID));
     
-    Set<Account> accounts = personServiceJdbc.getAccountsByPersonId(ID);
+    List<Account> accounts = personServiceJdbc.getAccountsByPersonId(ID);
   
     verify(sqlRowSet).beforeFirst();
     verify(jdbcTemplate).queryForRowSet(anyString(), eq(ID));
