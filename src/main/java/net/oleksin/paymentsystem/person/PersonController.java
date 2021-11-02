@@ -100,10 +100,10 @@ public class PersonController {
                   content = {
                           @Content(
                                   mediaType = "application/json",
-                                  array = @ArraySchema(schema = @Schema(implementation = PersonResponseDto.class))),
+                                  array = @ArraySchema(schema = @Schema(implementation = AccountDto.class))),
                           @Content(
                                   mediaType = "application/xml",
-                                  array = @ArraySchema(schema = @Schema(implementation = PersonResponseDto.class))),
+                                  array = @ArraySchema(schema = @Schema(implementation = AccountDto.class))),
                   })
   })
   @GetMapping(value = "{id}/accounts")

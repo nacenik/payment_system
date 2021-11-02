@@ -44,7 +44,6 @@ public class PaymentServiceJdbc extends AbstractPaymentService implements Paymen
                     "where id=?";
 
     private final JdbcTemplate jdbcTemplate;
-    private final ResultSetExtractor<Account> accountResultSetExtractor;
 
     @Override
     public Payment createNewPayment(Payment payment) {

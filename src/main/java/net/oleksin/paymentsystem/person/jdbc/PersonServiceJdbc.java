@@ -3,9 +3,11 @@ package net.oleksin.paymentsystem.person.jdbc;
 import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.accounttype.AccountType;
+import net.oleksin.paymentsystem.exception.PersonNotFoundException;
 import net.oleksin.paymentsystem.person.Person;
 import net.oleksin.paymentsystem.person.PersonService;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
@@ -35,8 +37,8 @@ public class PersonServiceJdbc implements PersonService {
 
     private static final String SQL_SELECT_ACCOUNTS_BY_PERSON_ID =
             "select * from accounts" +
-                    " inner join types" +
-                    " on accounts.type_id = types.id" +
+                    " inner join account_types" +
+                    " on accounts.type_id = account_types.id" +
                     " where accounts.person_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
@@ -53,7 +55,13 @@ public class PersonServiceJdbc implements PersonService {
 
     @Override
     public Person getPersonById(Long id) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_PERSON_BY_ID, this::mapToPerson, id);
+        Person person;
+        try {
+            person = jdbcTemplate.queryForObject(SQL_SELECT_PERSON_BY_ID, this::mapToPerson, id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new PersonNotFoundException(String.format("Person with id = %d not found", id));
+        }
+        return person;
     }
     
     @Override
