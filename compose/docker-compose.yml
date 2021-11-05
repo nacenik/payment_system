@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  payment:
+    image: 'stage-payment-system'
+    container_name: stage_payment_system
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      - pg_db
+    links:
+      - pg_db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg_db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=11111111
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_PROFILES_ACTIVE=springJpaProfile
+
+  pg_db:
+    image: 'postgres'
+    restart: unless-stopped
+    container_name: postgres
+    environment:
+      - POSTGRES_PASSWORD=11111111
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres_data:/var/app/payment/postgresql/volume
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+volumes:
+  postgres_data:
