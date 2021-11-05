@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@Profile({"springJpaProfile", "default"})
+@Profile({ "default", "springJpaProfile"})
 @AllArgsConstructor
 public class PersonServiceJpa implements PersonService {
   private final PersonRepository personRepository;
@@ -36,18 +36,21 @@ public class PersonServiceJpa implements PersonService {
   @Transactional
   @Override
   public Person getPersonById(Long id) {
-    return personRepository.findById(id)
-            .orElseThrow(PersonNotFoundException::new);
+    return getPerson(id);
   }
 
   @Transactional
   @Override
   public List<Account> getAccountsByPersonId(Long id) {
-    Person person = personRepository.findById(id)
-            .orElseThrow(PersonNotFoundException::new);
+    Person person = getPersonById(id);
     if (person.getAccounts() == null) {
       return Collections.emptyList();
     }
     return person.getAccounts();
+  }
+
+  private Person getPerson(Long id) {
+    return personRepository.findById(id)
+            .orElseThrow(() -> new PersonNotFoundException(String.format("Person with id = %d not found", id)));
   }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Profile({"springJpaProfile", "default"})
+@Profile({ "default", "springJpaProfile"})
 @AllArgsConstructor
 public class BatchPaymentServiceJpa implements BatchPaymentService {
   

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile({"springJpaProfile", "default"})
+@Profile({ "default", "springJpaProfile"})
 @AllArgsConstructor
 public class AccountTypeServiceJpa implements AccountTypeService {
   private final AccountTypeRepository accountTypeRepository;

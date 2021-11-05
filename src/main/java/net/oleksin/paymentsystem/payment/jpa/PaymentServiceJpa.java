@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Profile({"springJpaProfile", "default"})
+@Profile({ "default", "springJpaProfile"})
 public class PaymentServiceJpa extends AbstractPaymentService implements PaymentService {
 
   private final PaymentRepository paymentRepository;
