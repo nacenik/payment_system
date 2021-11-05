@@ -12,7 +12,7 @@ Back to the project package and run command
 
 ```shell
 cd ..
-mvn clean packege
+mvn clean package
 ```
 
 After this, create docker image
