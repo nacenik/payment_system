@@ -37,10 +37,10 @@ public class BatchPaymentServiceJdbc implements BatchPaymentService {
             " on source_account.person_id = payer.id" +
             " left join persons as recipient" +
             " on destination_account.person_id = recipient.id" +
-            " where payments.source_id = :srcAccId or payments.source_id is %s null" +
-            " and payments.destination_id = :destAccId or payments.destination_id is %s null" +
-            " and source_account.person_id = :payerId or source_account.person_id  is %s null" +
-            " and destination_account.person_id = :recipientId or destination_account.person_id is %s null";
+            " where (payments.source_id = :srcAccId or payments.source_id is %s null)" +
+            " and (payments.destination_id = :destAccId or payments.destination_id is %s null)" +
+            " and (source_account.person_id = :payerId or source_account.person_id  is %s null)" +
+            " and (destination_account.person_id = :recipientId or destination_account.person_id is %s null)";
     
     private final PaymentService paymentService;
     private final NamedParameterJdbcTemplate jdbcTemplate;

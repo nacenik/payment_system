@@ -46,7 +46,7 @@ public class PersonController {
   })
 })
   @PostMapping
-  public ResponseEntity<Object> createPerson(@Parameter(description = "Information about new person") @Valid @RequestBody PersonRequestDto personRequestDto) {
+  public ResponseEntity<Object> createPerson(@Parameter(description = "Information about new person") @RequestBody PersonRequestDto personRequestDto) {
     Person person = personService.saveNewPerson(personConverter.fromRequestDto(personRequestDto));
     return ResponseEntity.status(201).body(personConverter.toResponseDto(person));
   }

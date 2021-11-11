@@ -103,6 +103,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/account/AccountConverter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/account/AccountDto.java">
           <value>
             <set />
@@ -159,6 +164,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/accounttype/AccountType.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/accounttype/AccountTypeConverter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/accounttype/AccountTypeDto.java">
           <value>
             <set />
           </value>

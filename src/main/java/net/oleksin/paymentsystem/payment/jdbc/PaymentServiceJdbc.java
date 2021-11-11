@@ -40,8 +40,8 @@ public class PaymentServiceJdbc extends AbstractPaymentService implements Paymen
                     " where accounts.id = ?";
 
     public static final String SQL_UPDATE_ACCOUNT =
-            "update accounts set balance=?, " +
-                    "where id=?";
+            "update accounts set balance = ? " +
+                    "where id = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -101,7 +101,6 @@ public class PaymentServiceJdbc extends AbstractPaymentService implements Paymen
         preparedStatement.setString(4, newPayment.getStatus().getName());
         preparedStatement.setLong(5, newPayment.getSource().getId());
         preparedStatement.setLong(6, newPayment.getDestination().getId());
-        preparedStatement.executeQuery();
         return preparedStatement;
     }
 

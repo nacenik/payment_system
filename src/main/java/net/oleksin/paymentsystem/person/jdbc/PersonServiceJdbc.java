@@ -2,6 +2,7 @@ package net.oleksin.paymentsystem.person.jdbc;
 
 import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
+import net.oleksin.paymentsystem.account.AccountService;
 import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.exception.PersonNotFoundException;
 import net.oleksin.paymentsystem.person.Person;
@@ -11,9 +12,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,8 +30,8 @@ import java.util.List;
 public class PersonServiceJdbc implements PersonService {
 
     private static final String SQL_INSERT =
-            "insert into persons(id, first_name, last_name)" +
-                    " values (?, ?, ?)";
+            "insert into persons(first_name, last_name)" +
+                    " values (?, ?)";
 
     private static final String SQL_SELECT_ALL =
             "select * from persons";
@@ -42,10 +47,21 @@ public class PersonServiceJdbc implements PersonService {
                     " where accounts.person_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
+    private final AccountService accountService;
 
     @Override
     public Person saveNewPerson(Person person) {
-        return jdbcTemplate.execute(SQL_INSERT, getInsertCallBack(person));
+        if(person != null && person.getAccounts() != null) {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> returnId(connection, person), keyHolder);
+            person.setId(keyHolder.getKey().longValue());
+            person.getAccounts().forEach(account -> {
+                account.setPerson(person);
+                accountService.saveNewAccount(account);
+            });
+            return person;
+        }
+        return null;
     }
 
     @Override
@@ -95,15 +111,10 @@ public class PersonServiceJdbc implements PersonService {
                 .build();
     }
 
-    private PreparedStatementCallback<Person> getInsertCallBack(Person person) {
-        return preparedStatement -> {
-            preparedStatement.setLong(1, person.getId());
-            preparedStatement.setString(2, person.getFirstName());
-            preparedStatement.setString(3, person.getLastName());
-
-            preparedStatement.executeUpdate();
-
-            return person;
-        };
+    private PreparedStatement returnId(Connection connection, Person person) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT, new String[] { "id" });
+        preparedStatement.setString(1, person.getFirstName());
+        preparedStatement.setString(2, person.getLastName());
+        return preparedStatement;
     }
 }

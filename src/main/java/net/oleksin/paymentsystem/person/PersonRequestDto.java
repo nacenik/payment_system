@@ -1,6 +1,7 @@
 package net.oleksin.paymentsystem.person;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +29,8 @@ public class PersonRequestDto  {
 
   @Schema(description = "array of person accounts")
   private List<AccountDto> accounts;
+
+  @JsonPOJOBuilder(withPrefix = "")
+  public static class PersonRequestDtoBuilder {
+  }
 }

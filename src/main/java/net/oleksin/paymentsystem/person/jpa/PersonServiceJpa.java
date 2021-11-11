@@ -2,6 +2,8 @@ package net.oleksin.paymentsystem.person.jpa;
 
 import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
+import net.oleksin.paymentsystem.account.AccountService;
+import net.oleksin.paymentsystem.account.jpa.AccountRepository;
 import net.oleksin.paymentsystem.exception.PersonNotFoundException;
 import net.oleksin.paymentsystem.person.Person;
 import net.oleksin.paymentsystem.person.PersonService;
@@ -17,12 +19,18 @@ import java.util.List;
 @AllArgsConstructor
 public class PersonServiceJpa implements PersonService {
   private final PersonRepository personRepository;
+  private final AccountService accountService;
 
   @Transactional
   @Override
   public Person saveNewPerson(Person person) {
-    if (person != null) {
-      return personRepository.save(person);
+    if (person != null && person.getAccounts() != null) {
+      Person newPerson = personRepository.save(person);
+      person.getAccounts().forEach(account -> {
+        account.setPerson(newPerson);
+        accountService.saveNewAccount(account);
+      });
+      return newPerson;
     }
     return null;
   }
@@ -32,7 +40,7 @@ public class PersonServiceJpa implements PersonService {
   public List<Person> getAllPersons() {
     return personRepository.findAll();
   }
-  
+
   @Transactional
   @Override
   public Person getPersonById(Long id) {
