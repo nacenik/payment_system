@@ -563,6 +563,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/net/oleksin/paymentsystem/accounttype/jdbc/AccountTypeServiceJdbcTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/net/oleksin/paymentsystem/accounttype/jpa/AccountTypeServiceJpaTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/test/java/net/oleksin/paymentsystem/payment/PaymentControllerTest.java">
           <value>
             <set />

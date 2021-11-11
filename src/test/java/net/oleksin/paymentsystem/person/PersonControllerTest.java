@@ -78,20 +78,6 @@ class PersonControllerTest {
   }
   
   @Test
-  void createPersonForXmlTest() throws Exception {
-    when(personService.saveNewPerson(any())).thenReturn(Person.builder().id(1L).build());
-    String xml = mapToXml(personRequestDto);
-
-    ResultActions resultActions = mockMvc.perform(post(BASE_URL)
-            .contentType(MediaType.APPLICATION_XML_VALUE)
-            .content(xml));
-    resultActions.andExpect(status().is(201));
-
-    verify(personService, times(1))
-            .saveNewPerson(any());
-  }
-  
-  @Test
   void getAllPersonsTest() throws Exception {
     when(personService.getAllPersons())
             .thenReturn(List.of(Person.builder().id(1L).build(), Person.builder().id(2L).build()));

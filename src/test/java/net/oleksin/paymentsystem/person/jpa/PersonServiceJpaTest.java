@@ -1,6 +1,7 @@
 package net.oleksin.paymentsystem.person.jpa;
 
 import net.oleksin.paymentsystem.account.Account;
+import net.oleksin.paymentsystem.account.AccountService;
 import net.oleksin.paymentsystem.exception.PersonNotFoundException;
 import net.oleksin.paymentsystem.person.Person;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,25 +27,33 @@ class PersonServiceJpaTest {
   
   @Mock
   private PersonRepository personRepository;
+
+  @Mock
+  private AccountService accountService;
   
   @InjectMocks
   private PersonServiceJpa personServiceJpa;
   
   private Person person;
+  private Account firstAccount;
+  private Account secondAccount;
   
   
   @BeforeEach
   void setUp() {
+    firstAccount = Account.builder().id(1L).build();
+    secondAccount = Account.builder().id(2L).build();
     person = Person.builder()
             .id(1L)
             .firstName(NAME)
             .lastName(NAME)
-            .accounts(List.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()))
+            .accounts(List.of(firstAccount, secondAccount))
             .build();
   }
   
   @Test
   void saveNewPersonTest() {
+    when(accountService.saveNewAccount(any(Account.class))).thenReturn(firstAccount).thenReturn(secondAccount);
     when(personRepository.save(any())).thenReturn(person);
     
     Person savedPerson = personServiceJpa.saveNewPerson(person);
@@ -52,7 +61,7 @@ class PersonServiceJpaTest {
     assertEquals(person, savedPerson);
     
     verify(personRepository, times(1)).save(any());
-    
+    verify(accountService, times(2)).saveNewAccount(any(Account.class));
   }
   
   @Test

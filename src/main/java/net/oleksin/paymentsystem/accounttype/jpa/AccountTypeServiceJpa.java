@@ -39,10 +39,10 @@ public class AccountTypeServiceJpa implements AccountTypeService {
   }
 
   private  <E extends AccountType> boolean exists(final Class<E> entityClass, final String name) {
-    final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
-    final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-    final Root<E> from = cq.from(entityClass);
+    CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+    Root<E> from = cq.from(entityClass);
 
     cq.select(cb.count(from));
     cq.where(cb.equal(from.get(AccountType_.name), name));

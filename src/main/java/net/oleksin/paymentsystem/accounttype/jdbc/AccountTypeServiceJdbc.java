@@ -39,7 +39,7 @@ public class AccountTypeServiceJdbc implements AccountTypeService {
   @Override
   public AccountType saveNewAccountType(AccountType accountType) {
     Integer integer = jdbcTemplate.queryForObject(SQL_COUNT, Integer.TYPE, accountType.getName());
-    if (integer != null || integer != 0) {
+    if (integer != null && integer != 0) {
       return jdbcTemplate.queryForObject(SQL_SELECT, this::mapToAccountType, accountType.getName());
     }
     KeyHolder keyHolder = new GeneratedKeyHolder();

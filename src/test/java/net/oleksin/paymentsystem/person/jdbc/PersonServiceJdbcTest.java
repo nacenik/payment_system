@@ -1,6 +1,7 @@
 package net.oleksin.paymentsystem.person.jdbc;
 
 import net.oleksin.paymentsystem.account.Account;
+import net.oleksin.paymentsystem.account.AccountService;
 import net.oleksin.paymentsystem.person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,17 +11,20 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.RowMapper;
+import org.mockito.stubbing.Answer;
+import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,10 +43,16 @@ class PersonServiceJdbcTest {
   
   @Mock
   private SqlRowSet sqlRowSet;
+
+  @Mock
+  private AccountService accountService;
   
   @InjectMocks
   private PersonServiceJdbc personServiceJdbc;
-  
+
+  @Mock
+  private Connection connection;
+
   @Mock
   private ResultSet resultSet;
   
@@ -54,28 +64,53 @@ class PersonServiceJdbcTest {
   
   @Captor
   private ArgumentCaptor<PreparedStatementCallback<Person>> preparedStatementCallbackCaptor;
-  
+
+  @Captor
+  private ArgumentCaptor<PreparedStatementCreator> preparedStatementCreatorArgumentCaptor;
+
+  private Account firstAccount;
+  private Account secondAccount;
   private Person person;
   
   @BeforeEach
   void setUp() {
+    firstAccount = Account.builder().id(1L).build();
+    secondAccount = Account.builder().id(2L).build();
     person = Person.builder()
             .id(1L)
             .firstName(NAME)
             .lastName(NAME)
-            .accounts(List.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()))
+            .accounts(List.of(firstAccount, secondAccount))
             .build();
   }
   
   @Test
   void saveNewPersonTest() throws SQLException {
-    personServiceJdbc.saveNewPerson(person);
-  
-    verify(jdbcTemplate).execute(anyString(), preparedStatementCallbackCaptor.capture());
-    PreparedStatementCallback<Person> callback = preparedStatementCallbackCaptor.getValue();
-    
-    Person savedPerson = callback.doInPreparedStatement(preparedStatement);
-    
+    when(connection.prepareStatement(anyString(), any(String[].class)))
+            .thenReturn(preparedStatement);
+
+    when(accountService.saveNewAccount(any(Account.class)))
+            .thenReturn(firstAccount)
+            .thenReturn(secondAccount);
+
+    when(jdbcTemplate.update(preparedStatementCreatorArgumentCaptor.capture(), any(KeyHolder.class)))
+            .thenAnswer((Answer) invocation -> {
+      Object[] args = invocation.getArguments();
+      Map<String, Object> keyMap = new HashMap<>();
+      keyMap.put("", 1);
+      ((GeneratedKeyHolder)args[1]).getKeyList().add(keyMap);
+      return 1;
+    }).thenReturn(1);
+    Person savedPerson = personServiceJdbc.saveNewPerson(person);
+
+    verify(jdbcTemplate).update(preparedStatementCreatorArgumentCaptor.capture(), any(KeyHolder.class));
+
+    PreparedStatementCreator prepared = preparedStatementCreatorArgumentCaptor.getValue();
+    prepared.createPreparedStatement(connection);
+
+    verify(connection).prepareStatement(anyString(), any(String[].class));
+    verify(preparedStatement, times(2)).setString(anyInt(), anyString());
+
     assertNotNull(savedPerson);
     assertEquals(person, savedPerson);
   }
