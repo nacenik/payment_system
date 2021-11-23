@@ -34,10 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PaymentControllerTest {
 
     @Mock
-    private PaymentService paymentService;
-
-    @Mock
-    private BatchPaymentService batchPaymentService;
+    private PaymentProvider paymentProvider;
 
     @Mock
     private Converter<PaymentRequestDto, PaymentResponseDto, Payment> paymentConverter;
@@ -63,32 +60,32 @@ class PaymentControllerTest {
 
     @Test
     void createPaymentJsonTest() throws Exception {
-        when(paymentService.createNewPayment(any())).thenReturn(payment);
+        when(paymentProvider.createNewPayment(any())).thenReturn(payment);
 
         mockMvc.perform(post("/api/payment")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapToJson(paymentRequestDto)))
                 .andExpect(status().is(201));
 
-        verify(paymentService).createNewPayment(any());
+        verify(paymentProvider).createNewPayment(any());
     }
 
     @Test
     void createPaymentXmlTest() throws Exception {
-        when(paymentService.createNewPayment(any())).thenReturn(payment);
+        when(paymentProvider.createNewPayment(any())).thenReturn(payment);
 
         mockMvc.perform(post("/api/payment")
                         .contentType(MediaType.APPLICATION_XML)
                         .content(mapToXml(paymentRequestDto)))
                 .andExpect(status().is(201));
 
-        verify(paymentService).createNewPayment(any());
+        verify(paymentProvider).createNewPayment(any());
     }
 
     @Test
     void createPaymentsJsonTest() throws Exception {
         List<PaymentRequestDto> paymentRequestDtos = List.of(paymentRequestDto);
-        when(batchPaymentService.createNewPayments(any())).thenReturn(List.of(payment));
+        when(paymentProvider.createNewPayments(any())).thenReturn(List.of(payment));
 
 
         mockMvc.perform(post("/api/payments")
@@ -96,25 +93,25 @@ class PaymentControllerTest {
                         .content(mapToJson(paymentRequestDtos)))
                 .andExpect(status().is(200));
 
-        verify(batchPaymentService).createNewPayments(any());
+        verify(paymentProvider).createNewPayments(any());
     }
 
     @Test
     void createPaymentsXmlTest() throws Exception {
         List<PaymentRequestDto> paymentRequestDtos = List.of(paymentRequestDto);
-        when(batchPaymentService.createNewPayments(any())).thenReturn(List.of(payment));
+        when(paymentProvider.createNewPayments(any())).thenReturn(List.of(payment));
 
         mockMvc.perform(post("/api/payments")
                         .contentType(MediaType.APPLICATION_XML)
                         .content(mapToXmlList(paymentRequestDtos)))
                 .andExpect(status().is(200));
 
-        verify(batchPaymentService).createNewPayments(any());
+        verify(paymentProvider).createNewPayments(any());
     }
 
     @Test
     void getPaymentJournalWithFourParamTest() throws Exception {
-        when(batchPaymentService.getPaymentJournals(anyLong(), anyLong(), anyLong(), anyLong()))
+        when(paymentProvider.getPaymentJournals(anyLong(), anyLong(), anyLong(), anyLong()))
                 .thenReturn(List.of(PaymentJournalDto.builder().paymentId(1L).build()));
 
         mockMvc.perform(get("/api/payments")
@@ -124,19 +121,19 @@ class PaymentControllerTest {
                         .param("destAccId", "4"))
                 .andExpect(status().is(200));
 
-        verify(batchPaymentService).getPaymentJournals(anyLong(), anyLong(), anyLong(), anyLong());
+        verify(paymentProvider).getPaymentJournals(anyLong(), anyLong(), anyLong(), anyLong());
     }
 
     @Test
     void getPaymentJournalWithOneParamTest() throws Exception {
-        when(batchPaymentService.getPaymentJournals(anyLong(), any(), any(), any()))
+        when(paymentProvider.getPaymentJournals(anyLong(), any(), any(), any()))
                 .thenReturn(List.of(PaymentJournalDto.builder().paymentId(1L).build()));
 
         mockMvc.perform(get("/api/payments")
                         .param("payerId", "1"))
                 .andExpect(status().is(200));
 
-        verify(batchPaymentService).getPaymentJournals(anyLong(), any(), any(), any());
+        verify(paymentProvider).getPaymentJournals(anyLong(), any(), any(), any());
     }
 
     private String mapToJson(Object obj) throws JsonProcessingException {

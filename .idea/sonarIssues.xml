@@ -68,6 +68,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/s3starter/src/main/java/net/oleksin/s3starter/pojo/S3ClientWorker.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/Converter.java">
           <value>
             <set />
@@ -184,6 +189,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/accounttype/jpa/AccountTypeServiceJpa.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/configuration/S3ClientConfiguration.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/configuration/S3Configuration.java">
           <value>
             <set />
           </value>
@@ -333,6 +348,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/PaymentProvider.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/payment/PaymentRequestDto.java">
           <value>
             <set />
@@ -448,6 +468,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/person/PersonProvider.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/net/oleksin/paymentsystem/person/PersonRequestDto.java">
           <value>
             <set />
@@ -504,6 +529,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/resources/application.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/resources/application.yml">
           <value>
             <set />
           </value>
@@ -624,6 +654,66 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/test/java/net/oleksin/paymentsystem/person/jpa/PersonServiceJpaTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/target/classes/application.yml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/main/java/net/oleksin/s3starter/S3StarterConfiguration.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/main/java/net/oleksin/s3starter/client/S3ClientWorker.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/main/java/net/oleksin/s3starter/configuration/S3StarterConfiguration.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/main/java/net/oleksin/s3starter/pojo/S3ClientWorker.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/main/java/net/oleksin/s3starter/properties/S3Properties.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/main/java/net/oleksin/s3starter/properties/S3PropertiesClient.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/main/resources/META-INF/spring.factories">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/main/resources/application.yml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/src/test/java/net/oleksin/s3starter/configuration/S3StarterConfigurationTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../s3starter/target/classes/META-INF/spring-configuration-metadata.json">
           <value>
             <set />
           </value>

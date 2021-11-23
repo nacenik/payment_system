@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   payment:
-    image: 'stage-payment-system'
+    image: 'nacenik/stage-payment-system:v1'
     container_name: stage_payment_system
     expose:
       - 8080
@@ -19,6 +19,11 @@ services:
       - SPRING_DATASOURCE_PASSWORD=11111111
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_PROFILES_ACTIVE=springJpaProfile
+      - AWS_ACCESS_KEY_ID=AKIAVQJWDT3DGEIBN3OI
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_DEFAULT_REGION=us-east-1
+      - S3_BUCKETNAME=nacenik-pament-system-backet
+      - S3_REGION=us-east-1
 
   pg_db:
     image: 'postgres'

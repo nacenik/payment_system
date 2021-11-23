@@ -24,8 +24,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PaymentController {
   
-  private final PaymentService paymentService;
-  private final BatchPaymentService batchPaymentService;
+  private final PaymentProvider paymentProvider;
   private final Converter<PaymentRequestDto, PaymentResponseDto, Payment> paymentConverter;
 
   @Operation(summary = "Create new payment")
@@ -44,7 +43,7 @@ public class PaymentController {
   })
   @PostMapping(value = "/payment")
   public ResponseEntity<Object> createPayment(@Parameter(description = "New payment") @RequestBody PaymentRequestDto paymentRequestDto) {
-    Payment payment = paymentService.createNewPayment(paymentConverter.fromRequestDto(paymentRequestDto));
+    Payment payment = paymentProvider.createNewPayment(paymentConverter.fromRequestDto(paymentRequestDto));
     return ResponseEntity
             .status(201)
             .body(paymentConverter.toResponseDto(payment));
@@ -69,7 +68,7 @@ public class PaymentController {
     List<Payment> fromDto = paymentRequestDtoSet.stream()
             .map(paymentConverter::fromRequestDto)
             .collect(Collectors.toList());
-    List<Payment> payments = batchPaymentService.createNewPayments(fromDto);
+    List<Payment> payments = paymentProvider.createNewPayments(fromDto);
     return payments.stream()
             .map(paymentConverter::toResponseDto)
             .collect(Collectors.toList());
@@ -90,13 +89,12 @@ public class PaymentController {
                   })
   })
   @GetMapping(value = "/payments")
-  public List<PaymentJournalDto> GetPaymentJournal(
+  public List<PaymentJournalDto> getPaymentJournal(
           @Parameter(description = "Payer id") @RequestParam(required = false) Long payerId ,
           @Parameter(description = "Recipient id") @RequestParam(required = false) Long recipientId,
           @Parameter(description = "Source account id") @RequestParam(required = false) Long srcAccId,
           @Parameter(description = "Destination account id") @RequestParam(required = false) Long destAccId) {
-    List<PaymentJournalDto> paymentJournalDtos = batchPaymentService.getPaymentJournals(payerId, recipientId, srcAccId, destAccId);
-    return paymentJournalDtos;
+    return paymentProvider.getPaymentJournals(payerId, recipientId, srcAccId, destAccId);
   }
   
 

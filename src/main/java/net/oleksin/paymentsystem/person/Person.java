@@ -1,15 +1,13 @@
 package net.oleksin.paymentsystem.person;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.oleksin.paymentsystem.account.Account;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "persons")
@@ -31,4 +29,16 @@ public class Person implements Serializable {
   
   @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
   private List<Account> accounts = new ArrayList<>();
+
+  @Override
+  public String toString() {
+    return "Person{" +
+            "id=" + id +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", accounts=" + accounts.stream()
+            .map(Account::getId)
+            .collect(Collectors.toList()) +
+            '}';
+  }
 }

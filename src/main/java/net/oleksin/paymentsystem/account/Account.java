@@ -1,9 +1,6 @@
 package net.oleksin.paymentsystem.account;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.person.Person;
 import org.springframework.data.domain.Persistable;
@@ -41,5 +38,16 @@ public class Account implements Serializable, Persistable<Long> {
   @Override
   public boolean isNew() {
     return id == null;
+  }
+
+  @Override
+  public String toString() {
+    return "Account{" +
+            "id=" + id +
+            ", accountNumber='" + accountNumber + '\'' +
+            ", accountType=" + accountType +
+            ", balance=" + balance +
+            ", person=" + person.getId() +
+            '}';
   }
 }

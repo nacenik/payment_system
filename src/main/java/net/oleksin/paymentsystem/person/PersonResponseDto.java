@@ -3,10 +3,12 @@ package net.oleksin.paymentsystem.person;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Schema(description = "Response person entity", type = "xml")
 @Data
 @Builder
+@ToString
 public class PersonResponseDto {
 
   @Schema(description = "person id", example = "44")

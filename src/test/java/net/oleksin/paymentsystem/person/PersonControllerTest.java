@@ -36,7 +36,7 @@ class PersonControllerTest {
   private static final String BASE_URL = "/api/persons";
   
   @Mock
-  private PersonService personService;
+  private PersonProvider personProvider;
   @Mock
   private Converter<AccountDto, AccountDto, Account> accountConverter;
   @Mock
@@ -65,7 +65,7 @@ class PersonControllerTest {
   
   @Test
   void createPersonForJsonTest() throws Exception {
-    when(personService.saveNewPerson(any())).thenReturn(Person.builder().id(1L).build());
+    when(personProvider.createPerson(any())).thenReturn(Person.builder().id(1L).build());
     String json = mapToJson(personRequestDto);
 
     ResultActions resultActions = mockMvc.perform(post(BASE_URL)
@@ -73,45 +73,45 @@ class PersonControllerTest {
                     .content(json));
     resultActions.andExpect(status().is(201));
     
-    verify(personService, times(1))
-            .saveNewPerson(any());
+    verify(personProvider, times(1))
+            .createPerson(any());
   }
   
   @Test
   void getAllPersonsTest() throws Exception {
-    when(personService.getAllPersons())
+    when(personProvider.getAllPersons())
             .thenReturn(List.of(Person.builder().id(1L).build(), Person.builder().id(2L).build()));
     
     mockMvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   
-    verify(personService, times(1))
+    verify(personProvider, times(1))
             .getAllPersons();
   }
   
   @Test
   void getPersonByIdTest() throws Exception {
-    when(personService.getPersonById(anyLong()))
+    when(personProvider.getPersonById(anyLong()))
             .thenReturn(Person.builder().id(1L).build());
   
     mockMvc.perform(get(BASE_URL + "/1").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
   
-    verify(personService, times(1))
+    verify(personProvider, times(1))
             .getPersonById(anyLong());
   }
   
   @Test
   void getAccountsByPersonIdTest() throws Exception {
-    when(personService.getAccountsByPersonId(anyLong()))
+    when(personProvider.getAccountsByPersonId(anyLong()))
             .thenReturn(List.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()));
   
     mockMvc.perform(get(BASE_URL + "/1/accounts").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   
-    verify(personService, times(1))
+    verify(personProvider, times(1))
             .getAccountsByPersonId(anyLong());
   }
 

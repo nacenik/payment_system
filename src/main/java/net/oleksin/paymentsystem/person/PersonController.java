@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PersonController {
   
-  private final PersonService personService;
+  private final PersonProvider personProvider;
   private final Converter<AccountDto, AccountDto, Account> accountConverter;
   private final Converter<PersonRequestDto, PersonResponseDto, Person> personConverter;
 
@@ -47,7 +47,7 @@ public class PersonController {
 })
   @PostMapping
   public ResponseEntity<Object> createPerson(@Parameter(description = "Information about new person") @RequestBody PersonRequestDto personRequestDto) {
-    Person person = personService.saveNewPerson(personConverter.fromRequestDto(personRequestDto));
+    Person person = personProvider.createPerson(personConverter.fromRequestDto(personRequestDto));
     return ResponseEntity.status(201).body(personConverter.toResponseDto(person));
   }
 
@@ -67,7 +67,7 @@ public class PersonController {
   })
   @GetMapping
   public List<PersonResponseDto> getAllPersons() {
-    return personService.getAllPersons()
+    return personProvider.getAllPersons()
             .stream()
             .map(personConverter::toResponseDto)
             .collect(Collectors.toList());
@@ -89,7 +89,7 @@ public class PersonController {
   })
   @GetMapping(value = "/{id}")
   public PersonResponseDto getPersonById(@Parameter(description = "Person id") @PathVariable("id") Long id) {
-    return personConverter.toResponseDto(personService.getPersonById(id));
+    return personConverter.toResponseDto(personProvider.getPersonById(id));
   }
 
   @Operation(summary = "Get accounts by person id")
@@ -108,7 +108,7 @@ public class PersonController {
   })
   @GetMapping(value = "{id}/accounts")
   public List<AccountDto> getAccountsByPersonId(@Parameter(description = "Person id") @PathVariable("id") Long id) {
-    return personService.getAccountsByPersonId(id).stream()
+    return personProvider.getAccountsByPersonId(id).stream()
             .map(accountConverter::toResponseDto)
             .collect(Collectors.toList());
   }

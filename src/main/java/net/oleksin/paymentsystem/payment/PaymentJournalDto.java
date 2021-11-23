@@ -3,6 +3,7 @@ package net.oleksin.paymentsystem.payment;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import net.oleksin.paymentsystem.person.PersonResponseDto;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Schema(description = "Response payment journal entity")
 @Data
 @Builder
+@ToString
 public class PaymentJournalDto {
 
   @Schema(description = "payment id", example = "1")

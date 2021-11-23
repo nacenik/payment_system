@@ -1,10 +1,7 @@
 package net.oleksin.paymentsystem.payment;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.oleksin.paymentsystem.account.Account;
 import org.springframework.data.domain.Persistable;
 
@@ -15,10 +12,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payments")
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class Payment implements Serializable, Persistable<Long> {
 
   @Id
@@ -49,5 +48,18 @@ public class Payment implements Serializable, Persistable<Long> {
   @Override
   public boolean isNew() {
     return id == null;
+  }
+
+  @Override
+  public String toString() {
+    return "Payment{" +
+            "id=" + id +
+            ", source=" + source.getId() +
+            ", destination=" + destination.getId() +
+            ", amount=" + amount +
+            ", reason='" + reason + '\'' +
+            ", timestamp=" + timestamp +
+            ", status=" + status +
+            '}';
   }
 }

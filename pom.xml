@@ -18,7 +18,6 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -108,6 +107,12 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.3.6.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>net.oleksin</groupId>
+			<artifactId>s3starter</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
