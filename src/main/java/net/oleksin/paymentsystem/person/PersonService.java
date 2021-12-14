@@ -12,4 +12,6 @@ public interface PersonService {
   Person getPersonById(Long id);
   
   List<Account> getAccountsByPersonId(Long id);
+
+  boolean existByPersonIdAndAccountId(Long personId, Long accountId);
 }

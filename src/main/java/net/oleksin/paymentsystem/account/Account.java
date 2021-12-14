@@ -44,10 +44,9 @@ public class Account implements Serializable, Persistable<Long> {
   public String toString() {
     return "Account{" +
             "id=" + id +
-            ", accountNumber='" + accountNumber + '\'' +
+            ", accountNumber='" + accountNumber +
             ", accountType=" + accountType +
             ", balance=" + balance +
-            ", person=" + person.getId() +
             '}';
   }
 }

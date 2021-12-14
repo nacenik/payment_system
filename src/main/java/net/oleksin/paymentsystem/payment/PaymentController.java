@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.Converter;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class PaymentController {
                                   array = @ArraySchema(schema = @Schema(implementation = PaymentResponseDto.class))),
                   })
   })
+  @PreAuthorize("@authPermissionComponent.isPersonsAccount(principal, #paymentRequestDto.getSourceAccountId())")
   @PostMapping(value = "/payment")
   public ResponseEntity<Object> createPayment(@Parameter(description = "New payment") @RequestBody PaymentRequestDto paymentRequestDto) {
     Payment payment = paymentProvider.createNewPayment(paymentConverter.fromRequestDto(paymentRequestDto));
@@ -63,9 +65,10 @@ public class PaymentController {
                                   array = @ArraySchema(schema = @Schema(implementation = PaymentResponseDto.class))),
                   })
   })
+  @PreAuthorize("@authPermissionComponent.belongToBankAccount(principal, #paymentRequestDtoList)")
   @PostMapping(value = "/payments")
-  public List<PaymentResponseDto> createPayments(@Parameter(description = "Array of new payments") @RequestBody List<PaymentRequestDto> paymentRequestDtoSet) {
-    List<Payment> fromDto = paymentRequestDtoSet.stream()
+  public List<PaymentResponseDto> createPayments(@Parameter(description = "Array of new payments") @RequestBody List<PaymentRequestDto> paymentRequestDtoList) {
+    List<Payment> fromDto = paymentRequestDtoList.stream()
             .map(paymentConverter::fromRequestDto)
             .collect(Collectors.toList());
     List<Payment> payments = paymentProvider.createNewPayments(fromDto);
@@ -88,6 +91,7 @@ public class PaymentController {
                                   array = @ArraySchema(schema = @Schema(implementation = PaymentJournalDto.class))),
                   })
   })
+  @PreAuthorize("@authPermissionComponent.isAdminOrBelongToBankAccount(principal, #payerId)")
   @GetMapping(value = "/payments")
   public List<PaymentJournalDto> getPaymentJournal(
           @Parameter(description = "Payer id") @RequestParam(required = false) Long payerId ,

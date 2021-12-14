@@ -38,8 +38,6 @@ class PersonControllerTest {
   @Mock
   private PersonProvider personProvider;
   @Mock
-  private Converter<AccountDto, AccountDto, Account> accountConverter;
-  @Mock
   private Converter<PersonRequestDto, PersonResponseDto, Person> personConverter;
   
   @InjectMocks
@@ -100,19 +98,6 @@ class PersonControllerTest {
   
     verify(personProvider, times(1))
             .getPersonById(anyLong());
-  }
-  
-  @Test
-  void getAccountsByPersonIdTest() throws Exception {
-    when(personProvider.getAccountsByPersonId(anyLong()))
-            .thenReturn(List.of(Account.builder().id(1L).build(), Account.builder().id(2L).build()));
-  
-    mockMvc.perform(get(BASE_URL + "/1/accounts").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-  
-    verify(personProvider, times(1))
-            .getAccountsByPersonId(anyLong());
   }
 
   private String mapToJson(Object obj) throws JsonProcessingException {

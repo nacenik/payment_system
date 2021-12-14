@@ -14,6 +14,7 @@ import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 public class PersonController {
   
   private final PersonProvider personProvider;
-  private final Converter<AccountDto, AccountDto, Account> accountConverter;
   private final Converter<PersonRequestDto, PersonResponseDto, Person> personConverter;
 
   @Operation(summary = "Create new person")
@@ -45,6 +45,7 @@ public class PersonController {
                                   array = @ArraySchema(schema = @Schema(implementation = PersonResponseDto.class))),
   })
 })
+  @PreAuthorize("@authPermissionComponent.isAdmin(principal)")
   @PostMapping
   public ResponseEntity<Object> createPerson(@Parameter(description = "Information about new person") @RequestBody PersonRequestDto personRequestDto) {
     Person person = personProvider.createPerson(personConverter.fromRequestDto(personRequestDto));
@@ -65,6 +66,7 @@ public class PersonController {
                                   array = @ArraySchema(schema = @Schema(implementation = PersonResponseDto.class))),
                   })
   })
+  @PreAuthorize("@authPermissionComponent.isAdmin(principal)")
   @GetMapping
   public List<PersonResponseDto> getAllPersons() {
     return personProvider.getAllPersons()
@@ -87,29 +89,10 @@ public class PersonController {
                                   array = @ArraySchema(schema = @Schema(implementation = PersonResponseDto.class))),
                   })
   })
+  @PreAuthorize("@authPermissionComponent.isAdminOrBelongToBankAccount(principal, #id)")
   @GetMapping(value = "/{id}")
   public PersonResponseDto getPersonById(@Parameter(description = "Person id") @PathVariable("id") Long id) {
     return personConverter.toResponseDto(personProvider.getPersonById(id));
   }
 
-  @Operation(summary = "Get accounts by person id")
-  @ApiResponses(value = {
-          @ApiResponse(
-                  responseCode = "200",
-                  description = "Getting all person's accounts",
-                  content = {
-                          @Content(
-                                  mediaType = "application/json",
-                                  array = @ArraySchema(schema = @Schema(implementation = AccountDto.class))),
-                          @Content(
-                                  mediaType = "application/xml",
-                                  array = @ArraySchema(schema = @Schema(implementation = AccountDto.class))),
-                  })
-  })
-  @GetMapping(value = "{id}/accounts")
-  public List<AccountDto> getAccountsByPersonId(@Parameter(description = "Person id") @PathVariable("id") Long id) {
-    return personProvider.getAccountsByPersonId(id).stream()
-            .map(accountConverter::toResponseDto)
-            .collect(Collectors.toList());
-  }
 }

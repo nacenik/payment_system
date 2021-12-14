@@ -2,6 +2,7 @@ package net.oleksin.paymentsystem.person;
 
 import lombok.*;
 import net.oleksin.paymentsystem.account.Account;
+import net.oleksin.paymentsystem.security.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +27,7 @@ public class Person implements Serializable {
   
   @Column(name = "last_name")
   private String lastName;
-  
+
   @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
   private List<Account> accounts = new ArrayList<>();
 
@@ -36,9 +37,7 @@ public class Person implements Serializable {
             "id=" + id +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
-            ", accounts=" + accounts.stream()
-            .map(Account::getId)
-            .collect(Collectors.toList()) +
+            ", accounts=" + accounts +
             '}';
   }
 }

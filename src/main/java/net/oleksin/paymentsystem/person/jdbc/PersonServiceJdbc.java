@@ -46,6 +46,13 @@ public class PersonServiceJdbc implements PersonService {
                     " on accounts.type_id = account_types.id" +
                     " where accounts.person_id = ?";
 
+    private static final String SQL_EXISTS_BY_PERSON_ID_AND_ACCOUNT_ID =
+            "select count(*) from persons" +
+                    " left join accounts" +
+                    " on persons.id = accounts.person_id" +
+                    " where persons.id = ?" +
+                    " and accounts.id = ?";
+
     private final JdbcTemplate jdbcTemplate;
     private final AccountService accountService;
 
@@ -102,7 +109,13 @@ public class PersonServiceJdbc implements PersonService {
 
         return accounts;
     }
-    
+
+    @Override
+    public boolean existByPersonIdAndAccountId(Long personId, Long accountId) {
+        Integer count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_PERSON_ID_AND_ACCOUNT_ID, Integer.class, personId, accountId);
+        return  count != null && count == 1;
+    }
+
     private Person mapToPerson(ResultSet resultSet, int i) throws SQLException {
         return Person.builder()
                 .id(resultSet.getLong(1))

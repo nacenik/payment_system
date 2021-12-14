@@ -57,6 +57,11 @@ public class PersonServiceJpa implements PersonService {
     return person.getAccounts();
   }
 
+  @Override
+  public boolean existByPersonIdAndAccountId(Long personId, Long accountId) {
+    return personRepository.existsByIdAndAccountsId(personId, accountId);
+  }
+
   private Person getPerson(Long id) {
     return personRepository.findById(id)
             .orElseThrow(() -> new PersonNotFoundException(String.format("Person with id = %d not found", id)));

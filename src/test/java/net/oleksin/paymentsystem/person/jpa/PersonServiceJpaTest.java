@@ -155,4 +155,20 @@ class PersonServiceJpaTest {
     assertEquals(PersonNotFoundException.class, thrown.getClass());
     verify(personRepository, times(1)).findById(anyLong());
   }
+
+  @Test
+  void existByPersonIdAndAccountIdFalseTest() {
+    when(personRepository.existsByIdAndAccountsId(anyLong(), anyLong())).thenReturn(false);
+    assertFalse(personServiceJpa.existByPersonIdAndAccountId(1L , 1L));
+
+    verify(personRepository).existsByIdAndAccountsId(anyLong(), anyLong());
+  }
+
+  @Test
+  void existByPersonIdAndAccountIdTrueTest() {
+    when(personRepository.existsByIdAndAccountsId(anyLong(), anyLong())).thenReturn(true);
+    assertTrue(personServiceJpa.existByPersonIdAndAccountId(1L , 1L));
+
+    verify(personRepository).existsByIdAndAccountsId(anyLong(), anyLong());
+  }
 }
