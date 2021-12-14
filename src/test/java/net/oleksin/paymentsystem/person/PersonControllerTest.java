@@ -3,7 +3,6 @@ package net.oleksin.paymentsystem.person;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.oleksin.paymentsystem.Converter;
-import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

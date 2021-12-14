@@ -1,11 +1,9 @@
 package net.oleksin.paymentsystem.accounttype.jpa;
 
 import net.oleksin.paymentsystem.accounttype.AccountType;
-import net.oleksin.paymentsystem.accounttype.AccountType_;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,9 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
-
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

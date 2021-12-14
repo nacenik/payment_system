@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountService;
 import net.oleksin.paymentsystem.accounttype.AccountTypeService;
-import net.oleksin.paymentsystem.payment.Payment;
 import net.oleksin.paymentsystem.person.Person;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +11,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Service
 @Profile("jdbcTemplate")

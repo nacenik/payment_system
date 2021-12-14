@@ -1,14 +1,15 @@
 package net.oleksin.paymentsystem.person;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
-import net.oleksin.paymentsystem.security.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "persons")

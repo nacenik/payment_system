@@ -1,6 +1,9 @@
 package net.oleksin.paymentsystem.account;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.person.Person;
 import org.springframework.data.domain.Persistable;

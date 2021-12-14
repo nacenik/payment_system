@@ -1,7 +1,6 @@
 package net.oleksin.paymentsystem.person;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.s3starter.client.S3ClientWorker;

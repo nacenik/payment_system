@@ -3,7 +3,6 @@ package net.oleksin.paymentsystem.person.jpa;
 import lombok.AllArgsConstructor;
 import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.account.AccountService;
-import net.oleksin.paymentsystem.account.jpa.AccountRepository;
 import net.oleksin.paymentsystem.exception.PersonNotFoundException;
 import net.oleksin.paymentsystem.person.Person;
 import net.oleksin.paymentsystem.person.PersonService;

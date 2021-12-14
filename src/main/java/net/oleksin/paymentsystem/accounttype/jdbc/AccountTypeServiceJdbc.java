@@ -1,13 +1,10 @@
 package net.oleksin.paymentsystem.accounttype.jdbc;
 
 import lombok.AllArgsConstructor;
-import net.oleksin.paymentsystem.account.Account;
 import net.oleksin.paymentsystem.accounttype.AccountType;
 import net.oleksin.paymentsystem.accounttype.AccountTypeService;
-import net.oleksin.paymentsystem.person.Person;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;

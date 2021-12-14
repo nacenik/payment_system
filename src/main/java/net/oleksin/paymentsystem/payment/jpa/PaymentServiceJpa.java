@@ -8,14 +8,10 @@ import net.oleksin.paymentsystem.payment.AbstractPaymentService;
 import net.oleksin.paymentsystem.payment.Payment;
 import net.oleksin.paymentsystem.payment.PaymentService;
 import net.oleksin.paymentsystem.payment.Status;
-import net.oleksin.s3starter.client.S3ClientWorker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Service
