@@ -91,7 +91,7 @@ public class PaymentController {
                                   array = @ArraySchema(schema = @Schema(implementation = PaymentJournalDto.class))),
                   })
   })
-  @PreAuthorize("@authPermissionComponent.isAdminOrBelongToBankAccount(principal, #payerId)")
+  @PreAuthorize("@authPermissionComponent.isAdminOrBelongToBankAccount(principal, #payerId, #srcAccId)")
   @GetMapping(value = "/payments")
   public List<PaymentJournalDto> getPaymentJournal(
           @Parameter(description = "Payer id") @RequestParam(required = false) Long payerId ,

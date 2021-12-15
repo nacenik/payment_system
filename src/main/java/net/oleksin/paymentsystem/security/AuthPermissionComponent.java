@@ -35,9 +35,15 @@ public class AuthPermissionComponent {
                 .orElse(false);
     }
 
+    public boolean isAdminOrBelongToBankAccount(UserDetails principal, Long personId, Long accountId) {
+        return retrievePaymentUser(principal)
+                .map(paymentUser -> paymentUser.isAdminOrBelongToBankAccount(personId) || existByPersonIdAndAccountId(paymentUser, accountId))
+                .orElse(false);
+    }
+
     public boolean isPersonsAccount(UserDetails principal, Long accountId) {
         return retrievePaymentUser(principal)
-                .map(paymentUser -> personService.existByPersonIdAndAccountId(paymentUser.getPerson().getId(), accountId))
+                .map(paymentUser -> existByPersonIdAndAccountId(paymentUser, accountId))
                 .orElse(false);
     }
 
@@ -53,6 +59,10 @@ public class AuthPermissionComponent {
         }
         return Optional.of((JwtUserDetails) principal)
                 .map(JwtUserDetails::getUser);
+    }
+
+    private boolean existByPersonIdAndAccountId(User paymentUser, Long accountId) {
+        return personService.existByPersonIdAndAccountId(paymentUser.getPerson().getId(), accountId);
     }
 
 }
