@@ -1,6 +1,7 @@
 package net.oleksin.paymentsystem.configuration;
 
 import lombok.RequiredArgsConstructor;
+import net.oleksin.paymentsystem.security.ApiAuthenticationEntryPoint;
 import net.oleksin.paymentsystem.security.jwt.JwtTokenFilter;
 import net.oleksin.paymentsystem.security.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
@@ -35,9 +36,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     };
 
     private final JwtTokenProvider jwtTokenProvider;
+    private ApiAuthenticationEntryPoint apiAuthenticationEntryPoint;
 
+    @Override
     public void configure(HttpSecurity http) throws Exception {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider);
+        apiAuthenticationEntryPoint = new ApiAuthenticationEntryPoint();
+        jwtTokenFilter.setAuthenticationEntryPoint(apiAuthenticationEntryPoint);
+        
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -48,6 +54,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(BASE_API_URL).authenticated()
                 .anyRequest()
                 .authenticated()
+                .and()
+                .logout()
                 .and()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

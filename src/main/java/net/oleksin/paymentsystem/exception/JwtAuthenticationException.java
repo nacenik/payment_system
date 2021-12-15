@@ -1,13 +1,10 @@
 package net.oleksin.paymentsystem.exception;
 
-import javax.naming.AuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 
 public class JwtAuthenticationException extends AuthenticationException {
     public JwtAuthenticationException(String explanation) {
         super(explanation);
     }
 
-    public JwtAuthenticationException() {
-        super();
-    }
 }

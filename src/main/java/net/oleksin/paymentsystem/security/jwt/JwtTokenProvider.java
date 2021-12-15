@@ -35,7 +35,7 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         claims.put("roles", getRolesName(user));
         Date date = new Date();
-        Date validity = new Date(date.getTime() + jwtConfigurationProperties.getTtl() * 5000);
+        Date validity = new Date(date.getTime() + jwtConfigurationProperties.getTtl() * 1000);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -71,8 +71,8 @@ public class JwtTokenProvider {
 
     public String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
-        if (bearer != null && bearer.startsWith("Bearer_")) {
-            return bearer.substring(7);
+        if (bearer != null && bearer.startsWith("Bearer")) {
+            return bearer.replace("Bearer", "").trim();
         }
         return null;
     }

@@ -10,14 +10,10 @@ import net.oleksin.paymentsystem.security.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 @Tag(name = "Auth Controller", description = "auth")
@@ -32,19 +28,12 @@ public class AuthenticationRestController {
     @Operation(summary = "Login")
     @PostMapping("/login")
     public ResponseEntity<JwtTokenDto> login(@RequestBody AuthenticationDto authenticationDto) {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationDto.getEmail(), authenticationDto.getPassword()));
-            User user = userService.findByEmail(authenticationDto.getEmail());
-            String token = jwtTokenProvider.createToken(user);
-            JwtTokenDto jwtTokenDto = new JwtTokenDto();
-            jwtTokenDto.setEmail(user.getEmail());
-            jwtTokenDto.setToken(token);
-            return ResponseEntity.ok(jwtTokenDto);
-    }
-
-    @Operation(summary = "logout")
-    @PostMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
-        securityContextLogoutHandler.logout(request, response, null);
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationDto.getEmail(), authenticationDto.getPassword()));
+        User user = userService.findByEmail(authenticationDto.getEmail());
+        String token = jwtTokenProvider.createToken(user);
+        JwtTokenDto jwtTokenDto = new JwtTokenDto();
+        jwtTokenDto.setEmail(user.getEmail());
+        jwtTokenDto.setToken(token);
+        return ResponseEntity.ok(jwtTokenDto);
     }
 }

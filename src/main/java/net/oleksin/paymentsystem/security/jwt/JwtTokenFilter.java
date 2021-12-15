@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.oleksin.paymentsystem.exception.JwtAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,6 +19,11 @@ import java.io.IOException;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    public void setAuthenticationEntryPoint(AuthenticationEntryPoint authenticationEntryPoint) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -31,10 +37,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         } catch (JwtAuthenticationException e) {
             SecurityContextHolder.clearContext();
-            (httpServletResponse).sendError(HttpServletResponse.SC_FORBIDDEN);
+            authenticationEntryPoint.commence(httpServletRequest, httpServletResponse, e);
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
+
 
 
 }
