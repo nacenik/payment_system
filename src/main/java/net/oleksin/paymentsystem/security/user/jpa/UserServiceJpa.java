@@ -20,17 +20,15 @@ public class UserServiceJpa implements UserService {
     @Transactional
     @Override
     public User findByEmail(String email) {
-        User user =  userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User with email: " + email + " not found!"));
-        return user;
     }
 
     @Transactional
     @Override
     public User findByUsername(String username) {
-        User user = userRepository.findByUsername(username)
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User with username: " + username + " not found!"));
-        return user;
     }
 
     @Transactional
@@ -42,9 +40,8 @@ public class UserServiceJpa implements UserService {
     @Transactional
     @Override
     public User findById(Long id) {
-        User user = userRepository.findById(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found!"));
-        return user;
     }
 
     @Transactional
